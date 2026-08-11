@@ -1,0 +1,60 @@
+*** Booting Zephyr OS build v4.4.0 ***
+[00:00:00.000,000] <inf> demo: T_COOP running, step 1
+[00:00:00.500,000] <inf> demo: T_COOP running, step 2
+[00:00:01.000,000] <inf> demo: T_COOP running, step 3
+[00:00:01.500,000] <inf> demo: T_COOP running, step 4
+[00:00:02.000,000] <inf> demo: T_COOP running, step 5
+[00:00:02.500,000] <inf> demo: T_HIGH running
+[00:00:02.500,000] <inf> demo: T_MED running
+[00:00:02.500,000] <inf> demo: T_LOW running
+[00:00:02.600,000] <inf> demo: T_HIGH running
+[00:00:02.700,000] <inf> demo: T_MED running
+[00:00:02.700,000] <inf> demo: T_HIGH running
+[00:00:02.800,000] <inf> demo: T_LOW running
+[00:00:02.800,000] <inf> demo: T_HIGH running
+[00:00:02.900,000] <inf> demo: T_MED running
+[00:00:02.900,000] <inf> demo: T_HIGH running
+[00:00:03.000,000] <inf> demo: T_HIGH running
+[00:00:03.100,000] <inf> demo: T_LOW running
+[00:00:03.100,000] <inf> demo: T_MED running
+[00:00:03.100,000] <inf> demo: T_HIGH running
+[00:00:03.201,000] <inf> demo: T_HIGH running
+[00:00:03.300,000] <inf> demo: T_MED running
+[00:00:03.301,000] <inf> demo: T_HIGH running
+[00:00:03.400,000] <inf> demo: T_LOW running
+[00:00:03.401,000] <inf> demo: T_HIGH running
+[00:00:03.500,000] <inf> demo: T_MED running
+[00:00:03.501,000] <inf> demo: T_HIGH running
+[00:00:03.601,000] <inf> demo: T_HIGH running
+[00:00:03.700,000] <inf> demo: T_LOW running
+[00:00:03.700,000] <inf> demo: T_MED running
+[00:00:03.701,000] <inf> demo: T_HIGH running
+[00:00:03.801,000] <inf> demo: T_HIGH running
+[00:00:03.901,000] <inf> demo: T_MED running
+[00:00:03.901,000] <inf> demo: T_HIGH running
+[00:00:04.000,000] <inf> demo: T_LOW running
+[00:00:04.001,000] <inf> demo: T_HIGH running
+[00:00:04.101,000] <inf> demo: T_MED running
+[00:00:04.101,000] <inf> demo: T_HIGH running
+[00:00:04.202,000] <inf> demo: T_HIGH running
+[00:00:04.300,000] <inf> demo: T_LOW running
+[00:00:04.301,000] <inf> demo: T_MED running
+[00:00:04.302,000] <inf> demo: T_HIGH running
+[00:00:04.402,000] <inf> demo: T_HIGH running
+[00:00:04.501,000] <inf> demo: T_MED running
+[00:00:04.502,000] <inf> demo: T_HIGH running
+[00:00:04.601,000] <inf> demo: T_LOW running
+[00:00:04.602,000] <inf> demo: T_HIGH running
+[00:00:04.701,000] <inf> demo: T_MED running
+[00:00:04.702,000] <inf> demo: T_HIGH running
+[00:00:04.802,000] <inf> demo: T_HIGH running
+[00:00:04.901,000] <inf> demo: T_LOW running
+[00:00:04.901,000] <inf> demo: T_MED running
+[00:00:04.902,000] <inf> demo: T_HIGH running
+[00:00:05.002,000] <inf> demo: T_HIGH running
+[00:00:05.101,000] <inf> demo: T_MED running
+[00:00:05.102,000] <inf> demo: T_HIGH running
+[00:00:05.201,000] <inf> demo: T_LOW running
+[00:00:05.203,000] <inf> demo: T_HIGH running
+[00:00:05.301,000] <inf> demo: T_MED running
+[00:00:05.303,000] <inf> demo
