@@ -3,32 +3,49 @@
 
 LOG_MODULE_REGISTER(demo, LOG_LEVEL_DBG);
 
-#define STACK_SIZE 1024
+// Every thread shares the same stack size
+#define STACK_SIZE 256
 
-#define PRIO_A 5
-#define PRIO_B 5
+// Priorities of the three preemptive threads. A lower number means higher priority
+#define PRIORITY_LOW  7
+#define PRIORITY_MED  5
+#define PRIORITY_HIGH 3
 
-void thread_a_fn(void *p1, void *p2, void *p3)
-{
+//Sleep time for each of the 3 threads
+#define SLEEP_TIME_T_LOW_MS  300
+#define SLEEP_TIME_T_MED_MS  200
+#define SLEEP_TIME_T_HIGH_MS 100
+
+// Function for thread t_low
+void t_low_fn(void *p1, void *p2, void *p3) {
     while (1) {
-        k_msleep(200);
+        LOG_INF("T_LOW running");
+        k_msleep(SLEEP_TIME_T_LOW_MS);
     }
 }
 
-void thread_b_fn(void *p1, void *p2, void *p3)
-{
+// Function for thread t_med
+void t_med_fn(void *p1, void *p2, void *p3) {
     while (1) {
-        k_msleep(300);
+        LOG_INF("T_MED running");
+        k_msleep(SLEEP_TIME_T_MED_MS);
     }
 }
 
-K_THREAD_DEFINE(thread_a, STACK_SIZE, thread_a_fn,
-                NULL, NULL, NULL, PRIO_A, 0, 0);
-K_THREAD_DEFINE(thread_b, STACK_SIZE, thread_b_fn,
-                NULL, NULL, NULL, PRIO_B, 0, 0);
+// Function for thread t_high
+void t_high_fn(void *p1, void *p2, void *p3) {
+    while (1) {
+        LOG_INF("T_HIGH running");
+        k_msleep(SLEEP_TIME_T_HIGH_MS);
+    }
+}
 
-int main(void)
-{
+// The 3 preemptive threads are created at build time
+K_THREAD_DEFINE(t_low , STACK_SIZE, t_low_fn , NULL, NULL, NULL, PRIORITY_LOW , 0, 0);
+K_THREAD_DEFINE(t_med , STACK_SIZE, t_med_fn , NULL, NULL, NULL, PRIORITY_MED , 0, 0);
+K_THREAD_DEFINE(t_high, STACK_SIZE, t_high_fn, NULL, NULL, NULL, PRIORITY_HIGH, 0, 0);
+
+int main(void) {
     return 0;
 }
 
