@@ -4,61 +4,56 @@
 LOG_MODULE_REGISTER(demo, LOG_LEVEL_DBG);
 
 // Every thread shares the same stack size
-#define STACK_SIZE 256
+#define STACK_SIZE 1024
 
-// Priorities of the three preemptive threads. A lower number means higher priority
-#define PRIORITY_LOW  7
-#define PRIORITY_MED  5
-#define PRIORITY_HIGH 3
+// How many times each thread increments the shared counter
+#define NUMBER_OF_INCREMENTS 1000000
 
-// Priority of the cooperative task
-#define PRIORITY_COOP -1
+// Priorities of the 2 preemptive threads.
+#define PRIORITY 5
 
-//Sleep time for each of the 3 threads
-#define SLEEP_TIME_T_LOW_MS  300
-#define SLEEP_TIME_T_MED_MS  200
-#define SLEEP_TIME_T_HIGH_MS 100
+// Counter variable used
+static volatile int counter = 0;
 
-// Function for thread t_low
-void t_low_fn(void *p1, void *p2, void *p3) {
-    while (1) {
-        LOG_INF("T_LOW running");
-        k_msleep(SLEEP_TIME_T_LOW_MS);
+// Semaphore for waiting until both threads finish before printing out the result
+static K_SEM_DEFINE(sem, 0, 2);
+
+// Thread function for both threads
+void thread_fn(void *p1, void *p2, void *p3) {
+
+    const char *threadName = k_thread_name_get(k_current_get());
+    
+    for(int i = 0; i < NUMBER_OF_INCREMENTS; i++) {
+        counter++;
     }
+
+    LOG_INF("%s finished", threadName);
+    
+    k_sem_give(&sem);
 }
 
-// Function for thread t_med
-void t_med_fn(void *p1, void *p2, void *p3) {
-    while (1) {
-        LOG_INF("T_MED running");
-        k_msleep(SLEEP_TIME_T_MED_MS);
-    }
-}
-
-// Function for thread t_high
-void t_high_fn(void *p1, void *p2, void *p3) {
-    while (1) {
-        LOG_INF("T_HIGH running");
-        k_msleep(SLEEP_TIME_T_HIGH_MS);
-    }
-}
-
-// Function for cooperative thread t_coop: It prints the sam
-void t_coop_fn(void *p1, void *p2, void *p3) {
-    for(int i = 0; i<5; i++) {
-        LOG_INF("T_COOP running, step %d", i+1);
-        k_busy_wait(500000);
-    }
-    k_yield();
-}
-
-// The 3 preemptive threads are created at build time
-K_THREAD_DEFINE(t_low , STACK_SIZE, t_low_fn , NULL, NULL, NULL, PRIORITY_LOW , 0, 0);
-K_THREAD_DEFINE(t_med , STACK_SIZE, t_med_fn , NULL, NULL, NULL, PRIORITY_MED , 0, 0);
-K_THREAD_DEFINE(t_high, STACK_SIZE, t_high_fn, NULL, NULL, NULL, PRIORITY_HIGH, 0, 0);
-K_THREAD_DEFINE(t_coop, STACK_SIZE, t_coop_fn, NULL, NULL, NULL, PRIORITY_COOP, 0, 0);
+// The 2 preemptive threads are created
+K_THREAD_DEFINE(Thread_A , STACK_SIZE, thread_fn , NULL, NULL, NULL, PRIORITY , 0, 0);
+K_THREAD_DEFINE(Thread_B , STACK_SIZE, thread_fn , NULL, NULL, NULL, PRIORITY , 0, 0);
 
 int main(void) {
+    
+    // Gets the execution time until now, in miliseconds
+    int64_t time = k_uptime_get();
+
+    // Prints the expected final value which is double the times the number of increments
+    LOG_INF("The expected final value is %d", NUMBER_OF_INCREMENTS * 2);
+
+    // Waits until both threads finish
+    k_sem_take(&sem, K_FOREVER);
+    k_sem_take(&sem, K_FOREVER);
+
+    // Prints the final value
+    LOG_INF("The final value is %d", counter);
+
+    // Prints the total execution time. Gets the elapsed time in ms since
+    // the call to k_uptime_get()
+    LOG_INF("The total execution was: %lld ms", k_uptime_delta(&time));
+
     return 0;
 }
-
