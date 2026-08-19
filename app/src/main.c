@@ -18,13 +18,18 @@ static volatile int counter = 0;
 // Semaphore for waiting until both threads finish before printing out the result
 static K_SEM_DEFINE(sem, 0, 2);
 
+// The mutex used for protecting the shared data, the counter variable
+static K_MUTEX_DEFINE(mut); 
+
 // Thread function for both threads
 void thread_fn(void *p1, void *p2, void *p3) {
 
     const char *threadName = k_thread_name_get(k_current_get());
     
     for(int i = 0; i < NUMBER_OF_INCREMENTS; i++) {
+        k_mutex_lock(&mut, K_FOREVER);
         counter++;
+        k_mutex_unlock(&mut);
     }
 
     LOG_INF("%s finished", threadName);
