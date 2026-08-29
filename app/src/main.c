@@ -76,6 +76,8 @@ static void sensor_handler(struct k_work *work) {
 
 K_WORK_DEFINE(sensor_work, sensor_handler);
 
+K_WORK_DELAYABLE_DEFINE(dwork_sensor, sensor_handler);
+
 /* ================================================================ */
 
 /* ------------------------------------------------------------------ */
@@ -84,7 +86,6 @@ K_WORK_DEFINE(sensor_work, sensor_handler);
 
 static void sensor_sim_fn(void *p1, void *p2, void *p3) {
     int i;
-    struct k_work_delayable *dwork;
 
     for (i = 0; i < EVENT_COUNT; i++) {
         k_msleep(SENSOR_MS);
@@ -108,6 +109,7 @@ static void sensor_sim_fn(void *p1, void *p2, void *p3) {
          */
     }
     LOG_INF("[SENSOR] all events produced");
+    LOG_INF(" ");
 
 
     // Bonus: The event debouncing is done after the EVENT_COUNT events are submitted
@@ -115,12 +117,12 @@ static void sensor_sim_fn(void *p1, void *p2, void *p3) {
     LOG_INF("[SENSOR] Event debouncing: rescheduled every %dms with a delay of 30 ms", SENSOR_DEBOUNCE_MS);
     for(i = 0; i < EVENT_COUNT_DEBOUNCE; i++) {
         k_msleep(SENSOR_DEBOUNCE_MS);
-        dwork = k_work_delayable_from_work(&sensor_work);
-        k_work_reschedule(dwork, K_MSEC(30));
+        //dwork = k_work_delayable_from_work(&sensor_work);
+        k_work_reschedule(&dwork_sensor, K_MSEC(30));
 
         LOG_INF("[SENSOR] reschedule %d  tick=%u", i, k_uptime_get_32());
     }
-    LOG_INF("[SENSOR] all events rescheduled");
+    // LOG_INF("[SENSOR] all events rescheduled");
 }
 
 /* ------------------------------------------------------------------ */
@@ -195,7 +197,7 @@ int main(void)
     //LOG_INF("Run this, count wakeups, then convert to workqueue.");
 
     /* Wait long enough for all events to complete */
-    k_msleep((EVENT_COUNT + 2) * SENSOR_MS + 500);
+    //k_msleep((EVENT_COUNT + 2) * SENSOR_MS + 500);
 
     return 0;
 }
