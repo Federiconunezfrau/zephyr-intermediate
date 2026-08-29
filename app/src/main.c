@@ -47,10 +47,11 @@
 
 LOG_MODULE_REGISTER(homework, LOG_LEVEL_DBG);
 
-#define STACK_SIZE    1024
-#define SENSOR_MS     100    /* sensor fires every 100ms */
-#define POLL_MS       10     /* polling consumer checks every 10ms */
-#define EVENT_COUNT   10     /* total sensor events to produce */
+#define STACK_SIZE           1024
+#define SENSOR_MS            100  /* sensor fires every 100 ms */
+#define SENSOR_DEBOUNCE_MS   20   /* sensor fires every 20 ms */
+#define EVENT_COUNT          10   /* total sensor events to produce */
+#define EVENT_COUNT_DEBOUNCE 5    /* total sensor events to debounce */
 
 /* ================================================================
  * STARTER CODE -- inefficient polling version
@@ -61,7 +62,7 @@ LOG_MODULE_REGISTER(homework, LOG_LEVEL_DBG);
 
 /* Statistics */
 // static int total_events;
-static int total_wakeups;
+// static int total_wakeups;
 static int total_processed;
 
 /* ================================================================
@@ -82,7 +83,10 @@ K_WORK_DEFINE(sensor_work, sensor_handler);
 /* ------------------------------------------------------------------ */
 
 static void sensor_sim_fn(void *p1, void *p2, void *p3) {
-    for (int i = 0; i < EVENT_COUNT; i++) {
+    int i;
+    struct k_work_delayable *dwork;
+
+    for (i = 0; i < EVENT_COUNT; i++) {
         k_msleep(SENSOR_MS);
 
         //total_events++;
@@ -95,7 +99,6 @@ static void sensor_sim_fn(void *p1, void *p2, void *p3) {
         int ret = k_work_submit(&sensor_work);
         if (ret < 0) {
             LOG_ERR("submit failed: %d", ret);
-
         }
 
         /*
@@ -104,8 +107,20 @@ static void sensor_sim_fn(void *p1, void *p2, void *p3) {
          * the handler to collapse them to one execution.
          */
     }
-
     LOG_INF("[SENSOR] all events produced");
+
+
+    // Bonus: The event debouncing is done after the EVENT_COUNT events are submitted
+    // to the system workqueue as normal work items
+    LOG_INF("[SENSOR] Event debouncing: rescheduled every %dms with a delay of 30 ms", SENSOR_DEBOUNCE_MS);
+    for(i = 0; i < EVENT_COUNT_DEBOUNCE; i++) {
+        k_msleep(SENSOR_DEBOUNCE_MS);
+        dwork = k_work_delayable_from_work(&sensor_work);
+        k_work_reschedule(dwork, K_MSEC(30));
+
+        LOG_INF("[SENSOR] reschedule %d  tick=%u", i, k_uptime_get_32());
+    }
+    LOG_INF("[SENSOR] all events rescheduled");
 }
 
 /* ------------------------------------------------------------------ */
