@@ -67,3 +67,43 @@ Here is a copy-paste of the log printed:
 [00:00:01.002,000] <inf> homework: [SENSOR] all events produced
 
 ```
+## Bonus: debounce five events within 20 ms using k_work_reschedule ##
+
+For the bonus debounce task a delayable work item was created, `dwork_sensor`. The same `sensor_handler` was assigned as the handler. The reschedule of the deleyable work item was added in the same `sensor_sim` thread, just after the thread finishes with the 10 calls to `k_work_submit()`. 
+
+By looking at the log it can be seen that the `sensor_sim` thread reschedules the delayable work item `dwork_sensor` 5 times, once every 20 ms, and only after a 30 ms silence is that the `sensor_handler()` is called just once.
+
+```
+*** Booting Zephyr OS build v4.4.0 ***
+[00:00:00.000,000] <inf> homework: === L3 Homework: Polling to Workqueue ===
+[00:00:00.100,000] <inf> homework: [SENSOR] event 0  tick=100
+[00:00:00.100,000] <inf> homework: [HANDLER] processed event 1  tick=100
+[00:00:00.200,000] <inf> homework: [SENSOR] event 1  tick=200
+[00:00:00.200,000] <inf> homework: [HANDLER] processed event 2  tick=200
+[00:00:00.300,000] <inf> homework: [SENSOR] event 2  tick=300
+[00:00:00.300,000] <inf> homework: [HANDLER] processed event 3  tick=300
+[00:00:00.400,000] <inf> homework: [SENSOR] event 3  tick=400
+[00:00:00.400,000] <inf> homework: [HANDLER] processed event 4  tick=400
+[00:00:00.501,000] <inf> homework: [SENSOR] event 4  tick=501
+[00:00:00.501,000] <inf> homework: [HANDLER] processed event 5  tick=501
+[00:00:00.601,000] <inf> homework: [SENSOR] event 5  tick=601
+[00:00:00.601,000] <inf> homework: [HANDLER] processed event 6  tick=601
+[00:00:00.701,000] <inf> homework: [SENSOR] event 6  tick=701
+[00:00:00.701,000] <inf> homework: [HANDLER] processed event 7  tick=701
+[00:00:00.801,000] <inf> homework: [SENSOR] event 7  tick=801
+[00:00:00.801,000] <inf> homework: [HANDLER] processed event 8  tick=801
+[00:00:00.901,000] <inf> homework: [SENSOR] event 8  tick=901
+[00:00:00.901,000] <inf> homework: [HANDLER] processed event 9  tick=901
+[00:00:01.002,000] <inf> homework: [SENSOR] event 9  tick=1002
+[00:00:01.002,000] <inf> homework: [HANDLER] processed event 10  tick=1002
+[00:00:01.002,000] <inf> homework: [SENSOR] all events produced
+[00:00:01.002,000] <inf> homework:  
+[00:00:01.002,000] <inf> homework: [SENSOR] Event debouncing: rescheduled every 20ms with a delay of 30 ms
+[00:00:01.022,000] <inf> homework: [SENSOR] reschedule 0  tick=1022
+[00:00:01.042,000] <inf> homework: [SENSOR] reschedule 1  tick=1042
+[00:00:01.062,000] <inf> homework: [SENSOR] reschedule 2  tick=1062
+[00:00:01.082,000] <inf> homework: [SENSOR] reschedule 3  tick=1082
+[00:00:01.102,000] <inf> homework: [SENSOR] reschedule 4  tick=1102
+[00:00:01.132,000] <inf> homework: [HANDLER] processed event 11  tick=1132
+
+```
