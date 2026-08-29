@@ -61,7 +61,7 @@ LOG_MODULE_REGISTER(homework, LOG_LEVEL_DBG);
 
 /* Statistics */
 // static int total_events;
-// static int total_wakeups;
+static int total_wakeups;
 static int total_processed;
 
 /* ================================================================

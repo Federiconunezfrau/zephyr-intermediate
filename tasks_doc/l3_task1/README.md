@@ -36,3 +36,34 @@ Here is a copy-paste of the log printed:
 [00:00:01.010,000] <inf> homework: [SUMMARY] wasted wakeups = 90% of all wakeups
 
 ```
+## Confirm the handler runs only on real events
+After removing the polling thread and replacing it with the work item submit to the system workqueue, the log shows that the `sensor_handler` is called only when the `sensor_sim` thread fires. This can be verified by looking at the ticks count printed by the `sensor_handler` and the `sensor_sim thread`. On each log entry both tick counts have the same value.
+
+Here is a copy-paste of the log printed:
+
+```
+*** Booting Zephyr OS build v4.4.0 ***
+[00:00:00.000,000] <inf> homework: === L3 Homework: Polling to Workqueue ===
+[00:00:00.100,000] <inf> homework: [SENSOR] event 0  tick=100
+[00:00:00.100,000] <inf> homework: [HANDLER] processed event 1  tick=100
+[00:00:00.200,000] <inf> homework: [SENSOR] event 1  tick=200
+[00:00:00.200,000] <inf> homework: [HANDLER] processed event 2  tick=200
+[00:00:00.300,000] <inf> homework: [SENSOR] event 2  tick=300
+[00:00:00.300,000] <inf> homework: [HANDLER] processed event 3  tick=300
+[00:00:00.400,000] <inf> homework: [SENSOR] event 3  tick=400
+[00:00:00.400,000] <inf> homework: [HANDLER] processed event 4  tick=400
+[00:00:00.501,000] <inf> homework: [SENSOR] event 4  tick=501
+[00:00:00.501,000] <inf> homework: [HANDLER] processed event 5  tick=501
+[00:00:00.601,000] <inf> homework: [SENSOR] event 5  tick=601
+[00:00:00.601,000] <inf> homework: [HANDLER] processed event 6  tick=601
+[00:00:00.701,000] <inf> homework: [SENSOR] event 6  tick=701
+[00:00:00.701,000] <inf> homework: [HANDLER] processed event 7  tick=701
+[00:00:00.801,000] <inf> homework: [SENSOR] event 7  tick=801
+[00:00:00.801,000] <inf> homework: [HANDLER] processed event 8  tick=801
+[00:00:00.901,000] <inf> homework: [SENSOR] event 8  tick=901
+[00:00:00.901,000] <inf> homework: [HANDLER] processed event 9  tick=901
+[00:00:01.002,000] <inf> homework: [SENSOR] event 9  tick=1002
+[00:00:01.002,000] <inf> homework: [HANDLER] processed event 10  tick=1002
+[00:00:01.002,000] <inf> homework: [SENSOR] all events produced
+
+```
