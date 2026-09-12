@@ -8,7 +8,7 @@ LOG_MODULE_REGISTER(demo, LOG_LEVEL_DBG);
 #define STACK_SIZE                2048
 #define SENSOR_COUNT              10
 #define PRODUCER_PERIOD_MS        100
-#define CONSUMER_PERIOD_MS        10
+#define HEALTH_CHECK_PERIOD_MS    200
 #define K_MSGQ_DEPTH              10
 #define TIME_CONSUMER_STUCK_S     1
 #define RELOAD_TASK_WDT_PERIOD_MS 1000
@@ -112,12 +112,29 @@ static void consumer_thread_fn(void *p1, void *p2, void *p3) {
 }
 
 /* ================================================================== */
+/*  Health check: checks theMsgq fill level, logs a warning at 75%.   */
+/* ================================================================== */
+static void healtch_check_thread_fn(void *p1, void *p2, void *p3) {
+
+    ARG_UNUSED(p1); ARG_UNUSED(p2); ARG_UNUSED(p3);
+
+    uint32_t numUsed;
+
+    while( (numUsed = k_msgq_num_used_get(&theMsgq)) <= (K_MSGQ_DEPTH * 3 / 4)) {
+        k_msleep(HEALTH_CHECK_PERIOD_MS);
+    }
+
+    LOG_WRN("[HEALTH CHECK] theMsgq is at %d/%d", numUsed, K_MSGQ_DEPTH);
+}
+
+/* ================================================================== */
 /*  Threads defined for this task:                                    */
 /* 1) Producer thread: creates data and enqueues to a k_msgq          */
 /* 2) Consumer thread: dequeues data from the k_msgq                  */
 /* ================================================================== */
-K_THREAD_DEFINE(producer_thread, STACK_SIZE, producer_thread_fn, NULL, NULL, NULL, 5, 0, 0);
-K_THREAD_DEFINE(consumer_thread, STACK_SIZE, consumer_thread_fn, NULL, NULL, NULL, 5, 0, 0);
+K_THREAD_DEFINE(producer_thread    , STACK_SIZE, producer_thread_fn     , NULL, NULL, NULL, 5, 0, 0);
+K_THREAD_DEFINE(consumer_thread    , STACK_SIZE, consumer_thread_fn     , NULL, NULL, NULL, 5, 0, 0);
+K_THREAD_DEFINE(health_check_thread, STACK_SIZE, healtch_check_thread_fn, NULL, NULL, NULL, 5, 0, 0);
 
 /* ================================================================== */
 /*  Main                                                              */
@@ -125,7 +142,7 @@ K_THREAD_DEFINE(consumer_thread, STACK_SIZE, consumer_thread_fn, NULL, NULL, NUL
 int main(void) {
     LOG_INF("=== L5 Task 1: Study reliability under pressure ===");
     LOG_INF("The producer_thread publishes every %dms", PRODUCER_PERIOD_MS);
-    LOG_INF("The consumer thread reads every %dms"    , CONSUMER_PERIOD_MS);
+    LOG_INF("The consumer thread reads everytime data is available on theMsgq");
 
     // Initializes the task watchdog. This is called from the main thread
     // as it is guaranteed that it has a higher priority than the other
