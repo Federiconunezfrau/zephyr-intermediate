@@ -1,15 +1,17 @@
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
+#include <zephyr/task_wdt/task_wdt.h>
 #include <stdalign.h>
 
 LOG_MODULE_REGISTER(demo, LOG_LEVEL_DBG);
 
-#define STACK_SIZE            2048
-#define SENSOR_COUNT          10
-#define PRODUCER_PERIOD_MS    100
-#define CONSUMER_PERIOD_MS    10
-#define K_MSGQ_DEPTH          10
-#define TIME_CONSUMER_STUCK_S 10
+#define STACK_SIZE                2048
+#define SENSOR_COUNT              10
+#define PRODUCER_PERIOD_MS        100
+#define CONSUMER_PERIOD_MS        10
+#define K_MSGQ_DEPTH              10
+#define TIME_CONSUMER_STUCK_S     1
+#define RELOAD_TASK_WDT_PERIOD_MS 1000
 
 /* ================================================================== */
 /*  Data type and k_msgq used for communication between producer and  */
@@ -24,6 +26,15 @@ struct data {
 K_MSGQ_DEFINE(theMsgq, sizeof(struct data), K_MSGQ_DEPTH, alignof(struct data));
 
 /* ================================================================== */
+/*  Task watchdog callback: callback used by the producer thread,     */
+/*  when registering a channel in the task watchdog.                  */
+/*  PRODUCER_PERIOD_MS ms, up to a number of SENSOR_COUNT times.      */
+/* ================================================================== */
+static void producer_wdt_callback(int channel_id, void *user_data){
+    LOG_INF("Task watchdog channel %d callback, thread: %s\n", channel_id, k_thread_name_get((k_tid_t)user_data));
+}
+
+/* ================================================================== */
 /*  Producer: producer thread, publishes data on theMsgq every        */
 /*  PRODUCER_PERIOD_MS ms, up to a number of SENSOR_COUNT times.      */
 /* ================================================================== */
@@ -33,6 +44,13 @@ static void producer_thread_fn(void *p1, void *p2, void *p3) {
 
     // This message will be pushed to theMsgq
     struct data txData;
+
+    // The producer thread adds a task watchdog channel for itself.
+    // The watchdog is fed only when a txData is succesfully enqueued
+    // in theMsgq. This is done here and not in the consumer because the
+    // consumer could just wait indefinitely for a message that could never
+    // arrive, which is ok, however this condition will trigger the task watchdog.
+    int task_wdt_id = task_wdt_add(RELOAD_TASK_WDT_PERIOD_MS, producer_wdt_callback, (void *)k_current_get());
 
     // The producer pushes data to theMsq SENSOR_COUNT number of times
     for(uint32_t seq = 0; seq < SENSOR_COUNT ; seq++) {
@@ -49,6 +67,7 @@ static void producer_thread_fn(void *p1, void *p2, void *p3) {
             LOG_WRN("[PRODUCER] queue full, dropped seq=%u", seq);
         }
         else {
+            task_wdt_feed(task_wdt_id);
             LOG_DBG("[PRODUCER] transmitted seq=%u used=%u/%u", seq, k_msgq_num_used_get(&theMsgq), K_MSGQ_DEPTH);
         }
 
@@ -56,11 +75,13 @@ static void producer_thread_fn(void *p1, void *p2, void *p3) {
         k_msleep(PRODUCER_PERIOD_MS);
     }
 
+    // The task watchdog is deleted
+    task_wdt_delete(task_wdt_id);
     LOG_INF("[PRODUCER] done");
 }
 
 /* ================================================================== */
-/*  Message subscriber: logger thread                                 */
+/*  Consumer: consumer thread, reads from theMsgq.                    */
 /* ================================================================== */
 static void consumer_thread_fn(void *p1, void *p2, void *p3) {
 
@@ -105,6 +126,11 @@ int main(void) {
     LOG_INF("=== L5 Task 1: Study reliability under pressure ===");
     LOG_INF("The producer_thread publishes every %dms", PRODUCER_PERIOD_MS);
     LOG_INF("The consumer thread reads every %dms"    , CONSUMER_PERIOD_MS);
+
+    // Initializes the task watchdog. This is called from the main thread
+    // as it is guaranteed that it has a higher priority than the other
+    // threads (the main thread's priority is 0)
+    task_wdt_init(NULL);
 
     return 0;
 }
