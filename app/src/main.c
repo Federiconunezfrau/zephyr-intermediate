@@ -5,13 +5,14 @@
 
 LOG_MODULE_REGISTER(demo, LOG_LEVEL_DBG);
 
-#define STACK_SIZE                2048
-#define SENSOR_COUNT              10
-#define PRODUCER_PERIOD_MS        100
-#define HEALTH_CHECK_PERIOD_MS    200
-#define K_MSGQ_DEPTH              10
-#define TIME_CONSUMER_STUCK_S     1
-#define RELOAD_TASK_WDT_PERIOD_MS 1000
+#define STACK_SIZE                 2048
+#define SENSOR_COUNT               40
+#define CONSUMER_ITER_BEFORE_STUCK 3
+#define PRODUCER_PERIOD_MS         100
+#define HEALTH_CHECK_PERIOD_MS     100
+#define K_MSGQ_DEPTH               12
+#define TIME_CONSUMER_STUCK_S      3
+#define RELOAD_TASK_WDT_PERIOD_MS  1000
 
 /* ================================================================== */
 /*  Data type and k_msgq used for communication between producer and  */
@@ -31,7 +32,7 @@ K_MSGQ_DEFINE(theMsgq, sizeof(struct data), K_MSGQ_DEPTH, alignof(struct data));
 /*  PRODUCER_PERIOD_MS ms, up to a number of SENSOR_COUNT times.      */
 /* ================================================================== */
 static void producer_wdt_callback(int channel_id, void *user_data){
-    LOG_INF("Task watchdog channel %d callback, thread: %s\n", channel_id, k_thread_name_get((k_tid_t)user_data));
+    LOG_INF("[TASK WATCHDOG CHANNEL %d CALLBACK], thread: %s\n", channel_id, k_thread_name_get((k_tid_t)user_data));
 }
 
 /* ================================================================== */
@@ -104,7 +105,7 @@ static void consumer_thread_fn(void *p1, void *p2, void *p3) {
 
         // This emulates a stucked consumer: After some values are correctly received, the thread
         // goes to sleep for a long time in which theMsgq will not be read
-        if(received>=SENSOR_COUNT/2) {
+        if(received == CONSUMER_ITER_BEFORE_STUCK) {
             k_sleep(K_SECONDS(TIME_CONSUMER_STUCK_S));
         }
     }
