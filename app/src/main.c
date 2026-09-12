@@ -1,127 +1,110 @@
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
-#include <zephyr/zbus/zbus.h>
+#include <stdalign.h>
 
 LOG_MODULE_REGISTER(demo, LOG_LEVEL_DBG);
 
-#define STACK_SIZE       2048
-#define SENSOR_COUNT       10
-#define SENSOR_PERIOD_MS  100
-#define LOGGER_PERIOD_MS   10
+#define STACK_SIZE            2048
+#define SENSOR_COUNT          10
+#define PRODUCER_PERIOD_MS    100
+#define CONSUMER_PERIOD_MS    10
+#define K_MSGQ_DEPTH          10
+#define TIME_CONSUMER_STUCK_S 10
 
 /* ================================================================== */
-/*  ZBus channel for sensor data                                      */
+/*  Data type and k_msgq used for communication between producer and  */
+/*  consumer.                                                         */
 /* ================================================================== */
-struct sensor_data {
-    int32_t  temperature_mc;
+struct data {
+    uint32_t seq;
+    int32_t  value;
     uint32_t timestamp_ms;
-    uint8_t  seq;
 };
 
-ZBUS_CHAN_DEFINE(sensor_chan,                                         // The channel's name
-    struct sensor_data,                                               // The message type for this channel
-    NULL,                                                             // Validator not used here
-    NULL,                                                             // User data not used here
-    ZBUS_OBSERVERS(display_lis, logger_sub),                          // The observers list for this channel
-    ZBUS_MSG_INIT(.temperature_mc = 0, .timestamp_ms = 0, .seq = 0)); // The message's initial value
+K_MSGQ_DEFINE(theMsgq, sizeof(struct data), K_MSGQ_DEPTH, alignof(struct data));
 
 /* ================================================================== */
-/*  Display Listener                                                  */
+/*  Producer: producer thread, publishes data on theMsgq every        */
+/*  PRODUCER_PERIOD_MS ms, up to a number of SENSOR_COUNT times.      */
 /* ================================================================== */
-static void display_listener_cb(const struct zbus_channel *chan) {
-    const struct sensor_data *msg = (const struct sensor_data *)zbus_chan_const_msg(chan);
+static void producer_thread_fn(void *p1, void *p2, void *p3) {
 
-    LOG_INF("[DISPLAY-LIS] thread=%s seq=%u temp=%d mC t=%d ms", k_thread_name_get(k_current_get()), msg->seq, msg->temperature_mc, msg->timestamp_ms);
-}
-
-ZBUS_LISTENER_DEFINE(display_lis, // The listener's name
-    display_listener_cb);         // The listener's callback function
-
-/* ================================================================== */
-/*  Logger Subscriber                                                 */
-/* ================================================================== */
-ZBUS_SUBSCRIBER_DEFINE(logger_sub, // The subscriber's name
-    4);                            // The subscriber's notification queue size
-
-/* ================================================================== */
-/*  Publisher: sensor thread, publishes data on the ZBus channel
- *  every 100 ms.                                                     */
-/* ================================================================== */
-static void sensor_thread_fn(void *p1, void *p2, void *p3) {
     ARG_UNUSED(p1); ARG_UNUSED(p2); ARG_UNUSED(p3);
 
-    k_thread_name_set(k_current_get(), "sensor");
+    // This message will be pushed to theMsgq
+    struct data txData;
 
-    // The zbus publishing is performed SENSOR_COUNT number of times
-    for (int i = 0; i < SENSOR_COUNT; i++) {
+    // The producer pushes data to theMsq SENSOR_COUNT number of times
+    for(uint32_t seq = 0; seq < SENSOR_COUNT ; seq++) {
 
-        // This message will be published on the ZBus channel
-        struct sensor_data data = {
-            .temperature_mc = 24000 + (i * 350),
-            .timestamp_ms = k_uptime_get_32(),
-            .seq = (uint8_t)i,
-        };
+        // Fills the new data to be pushed to theMsgq
+        txData.seq = seq;
+        txData.value = 100 + (int32_t)seq;
+        txData.timestamp_ms = k_uptime_get_32();
 
-        LOG_INF("[SENSOR] publish seq=%u temp=%d mC, timestamp t=%d ms", data.seq, data.temperature_mc, data.timestamp_ms);
-
-        int ret = zbus_chan_pub(&sensor_chan, &data, K_MSEC(100));
-        if (ret != 0) {
-            LOG_WRN("[SENSOR] publish failed ret=%d", ret);
+        // Tries to push new data into theMsgq. It does not wait for
+        // space to be available. In case it couldn't, a warning is
+        // added to the log.
+        if(k_msgq_put(&theMsgq, &txData, K_NO_WAIT) != 0) {
+            LOG_WRN("[PRODUCER] queue full, dropped seq=%u", seq);
+        }
+        else {
+            LOG_DBG("[PRODUCER] transmitted seq=%u used=%u/%u", seq, k_msgq_num_used_get(&theMsgq), K_MSGQ_DEPTH);
         }
 
-        k_msleep(SENSOR_PERIOD_MS);
+        // The thread goes to waiting for PRODUCER_PERIOD_MS ms
+        k_msleep(PRODUCER_PERIOD_MS);
     }
-    LOG_INF("[SENSOR] done");
+
+    LOG_INF("[PRODUCER] done");
 }
 
 /* ================================================================== */
 /*  Message subscriber: logger thread                                 */
 /* ================================================================== */
-static void logger_thread_fn(void *p1, void *p2, void *p3) {
+static void consumer_thread_fn(void *p1, void *p2, void *p3) {
+
     ARG_UNUSED(p1); ARG_UNUSED(p2); ARG_UNUSED(p3);
 
-    k_thread_name_set(k_current_get(), "logger");
-
-    const struct zbus_channel *chan;
-    struct sensor_data msg;
+    struct data rxData;
     int received = 0;
+    int ret;
 
     while (received < SENSOR_COUNT) {
-
-        // Blocks until a there is a new notification on the ZBus channel
-        int ret = zbus_sub_wait(&logger_sub, &chan, K_MSEC(3000));
-        if (ret != 0) {
-            LOG_INF("[LOGGER-SUB] timeout, done");
+        // Blocks here until new data is pushed to theMsgq. In case
+        // ret != 0, an error is logged and it breaks out of the
+        // while loop
+        if((ret = k_msgq_get(&theMsgq, &rxData, K_FOREVER)) != 0) {
+            LOG_ERR("[PROCESSOR] receive failed: %d", ret);
             break;
         }
-
-        // Gets a copy of the message on the ZBus channel to the msg local variable
-        ret = zbus_chan_read(chan, &msg, K_MSEC(100));
-        if (ret != 0) {
-            LOG_WRN("[LOGGER-SUB] read failed ret=%d", ret);
-            continue;
-        }
-
         received++;
-        LOG_INF("[LOGGER-SUB] thread=%s seq=%u temp=%d mC t=%d ms", k_thread_name_get(k_current_get()), msg.seq, msg.temperature_mc, msg.timestamp_ms);
+        LOG_DBG("[CONSUMER] received seq=%u, value=%d, timestamp=%u", rxData.seq, rxData.value, rxData.timestamp_ms);
+
+        // This emulates a stucked consumer: After some values are correctly received, the thread
+        // goes to sleep for a long time in which theMsgq will not be read
+        if(received>=SENSOR_COUNT/2) {
+            k_sleep(K_SECONDS(TIME_CONSUMER_STUCK_S));
+        }
     }
-    LOG_INF("[LOGGER-SUB] done received=%d", received);
+    LOG_INF("[CONSUMER] done received=%d", received);
 }
 
 /* ================================================================== */
-/*  Threads defined for this task                                     */
+/*  Threads defined for this task:                                    */
+/* 1) Producer thread: creates data and enqueues to a k_msgq          */
+/* 2) Consumer thread: dequeues data from the k_msgq                  */
 /* ================================================================== */
-K_THREAD_DEFINE(sensor_thread, STACK_SIZE, sensor_thread_fn, NULL, NULL, NULL, 5, 0, 0);
-K_THREAD_DEFINE(logger_thread, STACK_SIZE, logger_thread_fn, NULL, NULL, NULL, 6, 0, 0);
+K_THREAD_DEFINE(producer_thread, STACK_SIZE, producer_thread_fn, NULL, NULL, NULL, 5, 0, 0);
+K_THREAD_DEFINE(consumer_thread, STACK_SIZE, consumer_thread_fn, NULL, NULL, NULL, 5, 0, 0);
 
 /* ================================================================== */
 /*  Main                                                              */
 /* ================================================================== */
 int main(void) {
-    LOG_INF("=== L4 Task 1: Build a small event-driven system with ZBus ===");
-    LOG_INF("sensor_thread publishes every %dms", SENSOR_PERIOD_MS);
-    LOG_INF("display listener runs in publisher context");
-    LOG_INF("logger uses a regular subscriber");
+    LOG_INF("=== L5 Task 1: Study reliability under pressure ===");
+    LOG_INF("The producer_thread publishes every %dms", PRODUCER_PERIOD_MS);
+    LOG_INF("The consumer thread reads every %dms"    , CONSUMER_PERIOD_MS);
 
     return 0;
 }
