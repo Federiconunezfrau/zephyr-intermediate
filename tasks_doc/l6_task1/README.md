@@ -76,6 +76,22 @@ uart connected to pseudotty: /dev/pts/2
 
 ## Inspect thread priorities and states with the kernel shell
 
+The shell was already enabled in the prj.conf file, through `CONFIG_SHELL=y`. Also, a series of commands for the kernel are already enabled thanks to `CONFIG_KERNEL_SHELL=y`. Here is a screen capture of the shell's output when running `kernel thread list`:
+
+![kernel_thread_list](Screenshot_2026-09-20_16-10-09.png)
+
+The threads created for this application are shown, as well as some other threads such as a dedicated shell thread, a dedicated logging thread and the idle thread. The main thread does not appear because the `main()` function has already returned:
+
+| Thread        | Priority | State   |
+| ------------- |:--------:| -------:|
+| maintenance   | 4        | pending |
+| control       | 7        | pending |
+| shell_uart    | 14       | queued  |
+| logging       | 14       | pending |
+| idle          | 15       | ,       |
 
 ## Capture CTF and decode it with Babeltrace
+
+
+
 ## Apply one correction and repeat the measurement
