@@ -1,154 +1,123 @@
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
-#include <zephyr/task_wdt/task_wdt.h>
-#include <stdalign.h>
+#include <zephyr/tracing/tracing.h>
 
-LOG_MODULE_REGISTER(demo, LOG_LEVEL_DBG);
+LOG_MODULE_REGISTER(homework, LOG_LEVEL_INF);
 
-#define STACK_SIZE                 2048
-#define SENSOR_COUNT               40
-#define CONSUMER_ITER_BEFORE_STUCK 3
-#define PRODUCER_PERIOD_MS         100
-#define HEALTH_CHECK_PERIOD_MS     100
-#define K_MSGQ_DEPTH               12
-#define TIME_CONSUMER_STUCK_S      3
-#define RELOAD_TASK_WDT_PERIOD_MS  1000
+#define STACK_SIZE            2048
+#define CONTROL_PRIORITY         7
+#define MAINTENANCE_PRIORITY     4
+#define EVENT_PERIOD_MS        250
+#define MAINTENANCE_LOAD_US  45000
 
-/* ================================================================== */
-/*  Data type and k_msgq used for communication between producer and  */
-/*  consumer.                                                         */
-/* ================================================================== */
-struct data {
+// TODO: COMPLETE DESCRIPTION
+#define DEADLINE_MS        10
+
+struct control_event {
     uint32_t seq;
-    int32_t  value;
-    uint32_t timestamp_ms;
+    uint32_t ready_ms;
 };
 
-K_MSGQ_DEFINE(theMsgq, sizeof(struct data), K_MSGQ_DEPTH, alignof(struct data));
+K_MSGQ_DEFINE(control_queue, sizeof(struct control_event), 4, 4);
+K_SEM_DEFINE(maintenance_start, 0, 1);
 
 /* ================================================================== */
-/*  Task watchdog callback: callback used by the producer thread,     */
-/*  when registering a channel in the task watchdog.                  */
-/*  PRODUCER_PERIOD_MS ms, up to a number of SENSOR_COUNT times.      */
+/*  Timer expiry: creates one control event                           */
 /* ================================================================== */
-static void producer_wdt_callback(int channel_id, void *user_data){
-    LOG_INF("[TASK WATCHDOG CHANNEL %d CALLBACK], thread: %s\n", channel_id, k_thread_name_get((k_tid_t)user_data));
-}
 
-/* ================================================================== */
-/*  Producer: producer thread, publishes data on theMsgq every        */
-/*  PRODUCER_PERIOD_MS ms, up to a number of SENSOR_COUNT times.      */
-/* ================================================================== */
-static void producer_thread_fn(void *p1, void *p2, void *p3) {
+static void event_timer_expiry(struct k_timer *timer)
+{
+    ARG_UNUSED(timer);
 
-    ARG_UNUSED(p1); ARG_UNUSED(p2); ARG_UNUSED(p3);
+    static uint32_t seq;
+    struct control_event event = {
+        .seq = seq++,
+        .ready_ms = k_uptime_get_32(),
+    };
 
-    // This message will be pushed to theMsgq
-    struct data txData;
+    /* Timer expiry runs in interrupt context, so never wait here. */
+    int ret = k_msgq_put(&control_queue, &event, K_NO_WAIT);
 
-    // The producer thread adds a task watchdog channel for itself.
-    // The watchdog is fed only when a txData is succesfully enqueued
-    // in theMsgq. This is done here and not in the consumer because the
-    // consumer could just wait indefinitely for a message that could never
-    // arrive, which is ok, however this condition will trigger the task watchdog.
-    int task_wdt_id = task_wdt_add(RELOAD_TASK_WDT_PERIOD_MS, producer_wdt_callback, (void *)k_current_get());
-
-    // The producer pushes data to theMsq SENSOR_COUNT number of times
-    for(uint32_t seq = 0; seq < SENSOR_COUNT ; seq++) {
-
-        // Fills the new data to be pushed to theMsgq
-        txData.seq = seq;
-        txData.value = 100 + (int32_t)seq;
-        txData.timestamp_ms = k_uptime_get_32();
-
-        // Tries to push new data into theMsgq. It does not wait for
-        // space to be available. In case it couldn't, a warning is
-        // added to the log.
-        if(k_msgq_put(&theMsgq, &txData, K_NO_WAIT) != 0) {
-            LOG_WRN("[PRODUCER] queue full, dropped seq=%u", seq);
-        }
-        else {
-            task_wdt_feed(task_wdt_id);
-            LOG_DBG("[PRODUCER] transmitted seq=%u used=%u/%u", seq, k_msgq_num_used_get(&theMsgq), K_MSGQ_DEPTH);
-        }
-
-        // The thread goes to waiting for PRODUCER_PERIOD_MS ms
-        k_msleep(PRODUCER_PERIOD_MS);
+    if (ret != 0) {
+        return;
     }
 
-    // The task watchdog is deleted
-    task_wdt_delete(task_wdt_id);
-    LOG_INF("[PRODUCER] done");
+    // A message is added to the log with te information of the recently enqueued event
+    LOG_INF("[PRODUCER] enqueued  seq=%u", event.seq);
+
+    /* Both threads become ready when the timer interrupt returns. */
+    k_sem_give(&maintenance_start);
+
+    /* TODO: Add an application trace event for this sequence. */
 }
 
-/* ================================================================== */
-/*  Consumer: consumer thread, reads from theMsgq.                    */
-/* ================================================================== */
-static void consumer_thread_fn(void *p1, void *p2, void *p3) {
+K_TIMER_DEFINE(event_timer, event_timer_expiry, NULL);
 
+/* ================================================================== */
+/*  Control thread                                                   */
+/* ================================================================== */
+
+static void control_fn(void *p1, void *p2, void *p3)
+{
     ARG_UNUSED(p1); ARG_UNUSED(p2); ARG_UNUSED(p3);
 
-    struct data rxData;
-    int received = 0;
-    int ret;
+    uint32_t latency_ms;
+    uint32_t deadline_misses = 0;
 
-    while (received < SENSOR_COUNT) {
-        // Blocks here until new data is pushed to theMsgq. In case
-        // ret != 0, an error is logged and it breaks out of the
-        // while loop
-        if((ret = k_msgq_get(&theMsgq, &rxData, K_FOREVER)) != 0) {
-            LOG_ERR("[PROCESSOR] receive failed: %d", ret);
-            break;
-        }
-        received++;
-        LOG_DBG("[CONSUMER] received seq=%u, value=%d, timestamp=%u", rxData.seq, rxData.value, rxData.timestamp_ms);
+    while (true) {
+        struct control_event event;
+        int ret = k_msgq_get(&control_queue, &event, K_FOREVER);
 
-        // This emulates a stucked consumer: After some values are correctly received, the thread
-        // goes to sleep for a long time in which theMsgq will not be read
-        if(received == CONSUMER_ITER_BEFORE_STUCK) {
-            k_sleep(K_SECONDS(TIME_CONSUMER_STUCK_S));
+        if (ret != 0) {
+            LOG_ERR("[CONTROL] receive failed: %d", ret);
+            continue;
         }
+
+        latency_ms = k_uptime_get_32() - event.ready_ms;
+
+        LOG_INF("[CONTROL ] processed seq=%u", event.seq);
+
+        /* TODO: Define a response-time guarantee. */
+        /* TODO: Measure latency and count every deadline miss. */
+        /* TODO: Rate-limit repeated warning messages. */
+
+        if (latency_ms > DEADLINE_MS) {
+            deadline_misses++;
+            LOG_WRN_RATELIMIT("deadline_miss count=%u seq=%u latency_ms=%u", deadline_misses, event.seq, latency_ms);
+        }
+        /* TODO: Add an application trace event for completion. */
     }
-    LOG_INF("[CONSUMER] done received=%d", received);
 }
 
 /* ================================================================== */
-/*  Health check: checks theMsgq fill level, logs a warning at 75%.   */
+/*  Background maintenance thread                                    */
 /* ================================================================== */
-static void healtch_check_thread_fn(void *p1, void *p2, void *p3) {
 
+static void maintenance_fn(void *p1, void *p2, void *p3)
+{
     ARG_UNUSED(p1); ARG_UNUSED(p2); ARG_UNUSED(p3);
 
-    uint32_t numUsed;
+    while (true) {
+        k_sem_take(&maintenance_start, K_FOREVER);
 
-    while( (numUsed = k_msgq_num_used_get(&theMsgq)) <= (K_MSGQ_DEPTH * 3 / 4)) {
-        k_msleep(HEALTH_CHECK_PERIOD_MS);
+        /* This work is important, but it has no short deadline. */
+        k_busy_wait(MAINTENANCE_LOAD_US);
     }
-
-    LOG_WRN("[HEALTH CHECK] theMsgq is at %d/%d", numUsed, K_MSGQ_DEPTH);
 }
 
-/* ================================================================== */
-/*  Threads defined for this task:                                    */
-/* 1) Producer thread: creates data and enqueues to a k_msgq          */
-/* 2) Consumer thread: dequeues data from the k_msgq                  */
-/* ================================================================== */
-K_THREAD_DEFINE(producer_thread    , STACK_SIZE, producer_thread_fn     , NULL, NULL, NULL, 5, 0, 0);
-K_THREAD_DEFINE(consumer_thread    , STACK_SIZE, consumer_thread_fn     , NULL, NULL, NULL, 5, 0, 0);
-K_THREAD_DEFINE(health_check_thread, STACK_SIZE, healtch_check_thread_fn, NULL, NULL, NULL, 5, 0, 0);
+K_THREAD_DEFINE(control, STACK_SIZE, control_fn,
+                NULL, NULL, NULL, CONTROL_PRIORITY, 0, 0);
 
-/* ================================================================== */
-/*  Main                                                              */
-/* ================================================================== */
-int main(void) {
-    LOG_INF("=== L5 Task 1: Study reliability under pressure ===");
-    LOG_INF("The producer_thread publishes every %dms", PRODUCER_PERIOD_MS);
-    LOG_INF("The consumer thread reads everytime data is available on theMsgq");
+K_THREAD_DEFINE(maintenance, STACK_SIZE, maintenance_fn,
+                NULL, NULL, NULL, MAINTENANCE_PRIORITY, 0, 0);
 
-    // Initializes the task watchdog. This is called from the main thread
-    // as it is guaranteed that it has a higher priority than the other
-    // threads (the main thread's priority is 0)
-    task_wdt_init(NULL);
+int main(void)
+{
+    LOG_INF("=== L6 Homework: Runtime Investigation ===");
+    LOG_INF("Control work must start within 10 ms");
+    LOG_INF("Inspect, measure, trace, explain, and correct the delay");
+
+    k_timer_start(&event_timer, K_MSEC(500), K_MSEC(EVENT_PERIOD_MS));
 
     return 0;
 }
