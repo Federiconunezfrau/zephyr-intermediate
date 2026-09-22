@@ -10,8 +10,9 @@ LOG_MODULE_REGISTER(homework, LOG_LEVEL_INF);
 #define EVENT_PERIOD_MS        250
 #define MAINTENANCE_LOAD_US  45000
 
-// TODO: COMPLETE DESCRIPTION
-#define DEADLINE_MS        10
+// Deadline for the control thread to dequeue an event, since the timer
+// expiry callback put it in the k_msgq.
+#define DEADLINE_MS 10
 
 struct control_event {
     uint32_t seq;
@@ -42,13 +43,14 @@ static void event_timer_expiry(struct k_timer *timer)
         return;
     }
 
-    // A message is added to the log with te information of the recently enqueued event
+    // A message is added to the log with the information of the recently enqueued event
     LOG_INF("[PRODUCER] enqueued  seq=%u", event.seq);
 
     /* Both threads become ready when the timer interrupt returns. */
     k_sem_give(&maintenance_start);
 
     /* TODO: Add an application trace event for this sequence. */
+    sys_trace_named_event("event_pushed", event.seq, event.ready_ms);
 }
 
 K_TIMER_DEFINE(event_timer, event_timer_expiry, NULL);
@@ -86,6 +88,7 @@ static void control_fn(void *p1, void *p2, void *p3)
             LOG_WRN_RATELIMIT("deadline_miss count=%u seq=%u latency_ms=%u", deadline_misses, event.seq, latency_ms);
         }
         /* TODO: Add an application trace event for completion. */
+        sys_trace_named_event("event_processed", event.seq, latency_ms);
     }
 }
 
