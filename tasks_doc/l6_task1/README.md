@@ -28,11 +28,11 @@ uart connected to pseudotty: /dev/pts/3
 
 ## Define and detect its response-time guarantee
 
-There is a log message entry generated at the `main()` function which says that the control work must start within 10 ms. By looking at the log's timestamps the control thread is called for the first time after 545 ms. After the first 500 ms have passed, timer started in the `main()` expires and the callback function is called for the first time, adding a message to the queue. After this, the semaphore is given and the callback returns. At this point the maintenance thread is changed to the running state, as it has higher priority than the control thread. This maintenance thread adds a 45 ms blocking delay. Only after this 45 ms is that the maintenance thread goes back to waiting, allowing the control thread to run and dequeue the message. **The 45 ms delay imposed by the maintenance thread is what is making the response-time guarantee fail.**
+There is a log message entry generated at the `main()` function which says that the control work must start within 10 ms. By looking at the log's timestamps the control thread is called for the first time after 545 ms. After the first 500 ms have passed, the timer that started running in the `main()` expires and the callback function is called for the first time, adding a message to the queue. After this, the semaphore is given and the callback returns. At this point the maintenance thread is changed to the running state, as it has higher priority than the control thread. This maintenance thread adds a 45 ms blocking delay. Only after this 45 ms is that the maintenance thread goes back to waiting, allowing the control thread to run and dequeue the message. **The 45 ms delay imposed by the maintenance thread is what is making the response-time guarantee fail.**
 
 ## Add sequence-based logs and deadline-miss counting
 
-A new message entry was added to the log, inside the timer callback, in order to identify when the event is was added to the queue. Also a deadline-miss counting log was added in the control thread. In order to rate limit this log message the configuration in prj.conf, CONFIG_LOG_RATELIMIT_INTERVAL_MS, was used.
+A new message entry was added to the log, inside the timer callback, in order to identify when the event is added to the queue. Also a deadline-miss counting log was added in the control thread. In order to rate limit this log message the configuration in prj.conf, CONFIG_LOG_RATELIMIT_INTERVAL_MS, was used.
 
 After adding this 2 modifications the following log was printed:
 
@@ -90,6 +90,8 @@ The threads created for this application are shown, as well as some other thread
 | logging       | 14       | pending |
 | idle          | 15       | ,       |
 
+The comma symbol in the idle thread indicates that this was the running thread.
+
 ## Capture CTF and decode it with Babeltrace
 
 Two named trace events were added to the main.c, one at the end of the control thread and the other at the end of the timer callback function:
@@ -117,7 +119,7 @@ $ ./build/zephyr/zephyr.exe -trace-file=data/channel0_0
 $ babeltrace data/ > out
 ```
 
-Here are 2 examples for the 2 named traces added for the task:
+Here are two examples for the named traces added for the task:
 ```
 out (lines 307-320)
 ...
@@ -151,8 +153,93 @@ out (lines 346-352)
 ...
 ```
 
-In the first sample the trace start and ends with isr_enter: and isr_exit. This is the timer isr, which calls the timer's callback function `event_timer_expiry()`, which can also be seen in the trace. This trace shows how both threads, control and maintenance, get ready. After the msgq_put_enter entry, there is an entry showing that the control thread is now ready. This is because the control thread was on the waiting state beacuse of the call to `k_msgq_get()`. Then, after the semaphore_give_enter, the maintenance thread goes to ready. This is beacuse the maintenance thread was on the waiting state because of the call to `k_sem_give()`.
+In the first sample the trace starts and ends with **isr_enter**: and **isr_exit**. This is the timer isr, which calls the timer's callback function `event_timer_expiry()`, which can also be seen in the trace. This trace shows how both threads, control and maintenance, get ready. After the **msgq_put_enter* entry, there is an entry showing that the control thread is now ready. This is because the control thread was on the waiting state as a consequence of calling `k_msgq_get()`. Then, after the **semaphore_give_enter* entry, the maintenance thread goes to ready. This is beacuse the maintenance thread was on the waiting state because of the call to `k_sem_give()`.
 
-The second sample shows how the control thread enters the running state, dequeues an event from the msg queue and on the next iteration of the `while (true)` loop it enters the waiting state because the msg queue is empty.
+The second sample shows how the control thread enters the running state, dequeues an event from the msg queue and on the next iteration of the `while (true)` loop enters the waiting state because the msg queue is empty.
+
+The scheduling delay is exposed by looking at the trace too. Here is an example that clearly shows what is happening:
+
+```
+out (lines 307-346)
+[21:00:00.500000000] (+0.010000000) 0 isr_enter:
+[21:00:00.500000000] (+0.000000000) 0 timer_expiry_enter: { id = 134624492 }
+[21:00:00.500000000] (+0.000000000) 0 msgq_put_enter: { id = 134624568, timeout = 0 }
+[21:00:00.500000000] (+0.000000000) 0 thread_sched_ready: { thread_id = 134624928, name = "control" }
+[21:00:00.500000000] (+0.000000000) 0 msgq_put_exit: { id = 134624568, timeout = 0, ret = 0 }
+[21:00:00.500000000] (+0.000000000) 0 timer_start: { id = 134626336, duration = 1000000, period = 0 }
+[21:00:00.500000000] (+0.000000000) 0 semaphore_give_enter: { id = 134624632 }
+[21:00:00.500000000] (+0.000000000) 0 thread_sched_ready: { thread_id = 134624768, name = "maintenance" }
+[21:00:00.500000000] (+0.000000000) 0 semaphore_give_exit: { id = 134624632 }
+[21:00:00.500000000] (+0.000000000) 0 named_event: { name = "event_pushed", arg0 = 0, arg1 = 500 }
+[21:00:00.500000000] (+0.000000000) 0 timer_expiry_exit: { id = 134624492 }
+[21:00:00.500000000] (+0.000000000) 0 timer_expiry_enter: { id = 134628420 }
+[21:00:00.500000000] (+0.000000000) 0 timer_expiry_exit: { id = 134628420 }
+[21:00:00.500000000] (+0.000000000) 0 isr_exit:
+[21:00:00.500000000] (+0.000000000) 0 thread_switched_out: { thread_id = 134629088, name = "idle" }
+[21:00:00.500000000] (+0.000000000) 0 thread_switched_in: { thread_id = 134624768, name = "maintenance" }
+[21:00:00.500000000] (+0.000000000) 0 semaphore_take_exit: { id = 134624632, timeout = 4294957296, ret = 0 }
+[21:00:00.500000000] (+0.000000000) 0 thread_busy_wait_enter: { usec_to_wait = 45000 }
+[21:00:00.510000000] (+0.010000000) 0 isr_enter:
+[21:00:00.510000000] (+0.000000000) 0 timer_expiry_enter: { id = 134628420 }
+[21:00:00.510000000] (+0.000000000) 0 timer_expiry_exit: { id = 134628420 }
+[21:00:00.510000000] (+0.000000000) 0 isr_exit:
+[21:00:00.520000000] (+0.010000000) 0 isr_enter:
+[21:00:00.520000000] (+0.000000000) 0 timer_expiry_enter: { id = 134628420 }
+[21:00:00.520000000] (+0.000000000) 0 timer_expiry_exit: { id = 134628420 }
+[21:00:00.520000000] (+0.000000000) 0 isr_exit:
+[21:00:00.530000000] (+0.010000000) 0 isr_enter:
+[21:00:00.530000000] (+0.000000000) 0 timer_expiry_enter: { id = 134628420 }
+[21:00:00.530000000] (+0.000000000) 0 timer_expiry_exit: { id = 134628420 }
+[21:00:00.530000000] (+0.000000000) 0 isr_exit:
+[21:00:00.540000000] (+0.010000000) 0 isr_enter:
+[21:00:00.540000000] (+0.000000000) 0 timer_expiry_enter: { id = 134628420 }
+[21:00:00.540000000] (+0.000000000) 0 timer_expiry_exit: { id = 134628420 }
+[21:00:00.540000000] (+0.000000000) 0 isr_exit:
+[21:00:00.545000000] (+0.005000000) 0 thread_busy_wait_exit: { usec_to_wait = 45000 }
+[21:00:00.545000000] (+0.000000000) 0 semaphore_take_enter: { id = 134624632, timeout = 4294957296 }
+[21:00:00.545000000] (+0.000000000) 0 semaphore_take_blocking: { id = 134624632, timeout = 4294957296 }
+[21:00:00.545000000] (+0.000000000) 0 thread_sched_pend: { thread_id = 134624768, name = "maintenance" }
+[21:00:00.545000000] (+0.000000000) 0 thread_switched_out: { thread_id = 134624768, name = "maintenance" }
+[21:00:00.545000000] (+0.000000000) 0 thread_switched_in: { thread_id = 134624928, name = "control" }
+```
+
+In this trace the first **named_event** is **event_pushed*, so it belongs to the timer's callback. The next **isr_exit* is caused by the timer isr returning. Then it can be seen that the scheduler switches to the maintenance thread. Inside this thread the blocking delay occurs, which also is visible in the trace by the:
+
+[21:00:00.500000000] (+0.000000000) 0 thread_busy_wait_enter: { usec_to_wait = 45000 }
+...
+[21:00:00.545000000] (+0.005000000) 0 thread_busy_wait_exit: { usec_to_wait = 45000 }
+
+It is after this that the thread tries to take the semaphore, blocks and the sceheduler switches the control thread in.
 
 ## Apply one correction and repeat the measurement
+
+The scheduling delay is caused because of the blocking delay on the maintenances thread. The correction applied was to increase the control's thread priority (7 --> 3), over the maintenance thread. This way, after the timer interrupt returns, the thread will switch the control thread into running, instead of the maintenance thread.
+
+Here is a sample of the trace with the correction applied. It can be seen that, when the timer callback returns (indicated by the first **isr_exit*), the control thread is switched in, instead of the maintenance thread:
+
+```
+out_2 (lines 307-329)
+[21:00:00.500000000] (+0.010000000) 0 isr_enter:
+[21:00:00.500000000] (+0.000000000) 0 timer_expiry_enter: { id = 134624492 }
+[21:00:00.500000000] (+0.000000000) 0 msgq_put_enter: { id = 134624568, timeout = 0 }
+[21:00:00.500000000] (+0.000000000) 0 thread_sched_ready: { thread_id = 134624928, name = "control" }
+[21:00:00.500000000] (+0.000000000) 0 msgq_put_exit: { id = 134624568, timeout = 0, ret = 0 }
+[21:00:00.500000000] (+0.000000000) 0 timer_start: { id = 134626336, duration = 1000000, period = 0 }
+[21:00:00.500000000] (+0.000000000) 0 semaphore_give_enter: { id = 134624632 }
+[21:00:00.500000000] (+0.000000000) 0 thread_sched_ready: { thread_id = 134624768, name = "maintenance" }
+[21:00:00.500000000] (+0.000000000) 0 semaphore_give_exit: { id = 134624632 }
+[21:00:00.500000000] (+0.000000000) 0 named_event: { name = "event_pushed", arg0 = 0, arg1 = 500 }
+[21:00:00.500000000] (+0.000000000) 0 timer_expiry_exit: { id = 134624492 }
+[21:00:00.500000000] (+0.000000000) 0 timer_expiry_enter: { id = 134628420 }
+[21:00:00.500000000] (+0.000000000) 0 timer_expiry_exit: { id = 134628420 }
+[21:00:00.500000000] (+0.000000000) 0 isr_exit:
+[21:00:00.500000000] (+0.000000000) 0 thread_switched_out: { thread_id = 134629088, name = "idle" }
+[21:00:00.500000000] (+0.000000000) 0 thread_switched_in: { thread_id = 134624928, name = "control" }
+[21:00:00.500000000] (+0.000000000) 0 msgq_get_exit: { id = 134624568, timeout = 4294957296, ret = 0 }
+[21:00:00.500000000] (+0.000000000) 0 named_event: { name = "event_processed", arg0 = 0, arg1 = 0 }
+[21:00:00.500000000] (+0.000000000) 0 msgq_get_enter: { id = 134624568, timeout = 4294957296 }
+[21:00:00.500000000] (+0.000000000) 0 msgq_get_blocking: { id = 134624568, timeout = 4294957296 }
+[21:00:00.500000000] (+0.000000000) 0 thread_sched_pend: { thread_id = 134624928, name = "control" }
+[21:00:00.500000000] (+0.000000000) 0 thread_switched_out: { thread_id = 134624928, name = "control" }
+[21:00:00.500000000] (+0.000000000) 0 thread_switched_in: { thread_id = 134624768, name = "maintenance" }
+```
