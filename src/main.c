@@ -1,8 +1,11 @@
 #include <zephyr/kernel.h>
+#include <zephyr/logging/log.h>
 #include <stdio.h>
 #include <string.h>
 #include "credentials.h"
 #include "parser.h"
+
+LOG_MODULE_REGISTER(main, LOG_LEVEL_INF);
 
 #define PARSER_STACK_SIZE 2048
 
@@ -39,5 +42,8 @@ int main(void)
 	k_thread_create(&parser_thread, parser_stack, PARSER_STACK_SIZE,
 			parser_entry, (void *)attack_index, NULL, NULL,
 			5, K_USER, K_NO_WAIT);
+
+	LOG_INF("The key's address is: %p", credentials_key_addr());
+
 	return 0;
 }
