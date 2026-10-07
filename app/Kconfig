@@ -1,3 +1,0 @@
-menu "Configuracion de Zephyr"
-    source "Kconfig.zephyr"
-endmenu
