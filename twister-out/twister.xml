@@ -1,5 +1,5 @@
 <testsuites>
-	<testsuite name="native_sim/native" timestamp="2026-10-11T10:54:38.348163" time="0.17" tests="2" failures="0" errors="0" skipped="0">
+	<testsuite name="native_sim/native" timestamp="2026-10-11T12:24:01.263545" time="0.17" tests="2" failures="0" errors="0" skipped="0">
 		<properties>
 			<property name="version" value="v4.4.0" />
 		</properties>

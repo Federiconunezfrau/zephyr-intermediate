@@ -45,7 +45,21 @@ ZTEST(temp_alarm_sensor_errors, test_fetch_error_propagates)
 	 * and the module does not go on to read the channel.
 	 * See TEST_SPEC.md "Suite temp_alarm_sensor_errors" #1.
 	 */
-	ztest_test_skip();
+	int ret;
+	struct temp_alarm_status status;
+
+	// The precondition is done here because the before hook is shared
+	// among every test
+	fake_sensor_sample_fetch_fake.return_val = -EIO;
+
+	ret = temp_alarm_check();
+	zassert_not_ok(ret, "Check should fail");
+	zassert_equal(ret, -EIO, "Check should fail with error -EIO, got %d", ret);
+	ret = temp_alarm_get_status(&status);
+	zassert_ok(ret, "get_status should succeed");
+	zassert_equal(status.last_error, -EIO, "last_error should be -EIO, got %d", status.last_error);
+	zassert_equal(fake_sensor_channel_get_fake.call_count, 0,
+	            "channel_get should not have been called because sample_fetch failed, but it was called %d times", fake_sensor_channel_get_fake.call_count);
 }
 
 ZTEST(temp_alarm_sensor_errors, test_channel_get_error_propagates)
@@ -53,7 +67,24 @@ ZTEST(temp_alarm_sensor_errors, test_channel_get_error_propagates)
 	/* TODO(l8-task2): a failed channel read is reported.
 	 * See TEST_SPEC.md "Suite temp_alarm_sensor_errors" #2.
 	 */
-	ztest_test_skip();
+	int ret;
+	struct temp_alarm_status status;
+
+	// The precondition is done here because the before hook is shared
+	// among every test
+	fake_sensor_channel_get_fake.return_val = -EIO;
+
+	// The custom_fake is cleared because of precedence
+	fake_sensor_channel_get_fake.custom_fake = NULL;
+
+	ret = temp_alarm_check();
+	zassert_not_ok(ret, "Check should fail");
+	zassert_equal(ret, -EIO, "Check should fail with error -EIO, got %d", ret);
+	ret = temp_alarm_get_status(&status);
+	zassert_ok(ret, "get_status should succeed");
+	zassert_equal(status.last_error, -EIO, "last_error should be -EIO, got %d", status.last_error);
+	zassert_equal(fake_sensor_sample_fetch_fake.call_count, 1,
+	            "sample_fetch should have been called once, but it was called %d times", fake_sensor_sample_fetch_fake.call_count);
 }
 
 ZTEST(temp_alarm_sensor_errors, test_fail_then_recover)
@@ -62,7 +93,29 @@ ZTEST(temp_alarm_sensor_errors, test_fail_then_recover)
 	 * The module must recover on the second check.
 	 * See TEST_SPEC.md "Suite temp_alarm_sensor_errors" #3.
 	 */
-	ztest_test_skip();
+	int ret;
+	struct temp_alarm_status status;
+	int returnValSequence[] = {-EIO, 0};
+
+	// The precondition is done here because the before hook is shared
+	// among every test
+	SET_RETURN_SEQ(fake_sensor_sample_fetch, returnValSequence, ARRAY_SIZE(returnValSequence));
+	sensor_fake_set_temperature(20);
+
+	// First check should fail
+	ret = temp_alarm_check();
+	zassert_not_ok(ret, "Check should fail");
+	zassert_equal(ret, -EIO, "Check should fail with error -EIO, got %d", ret);
+
+	// Second check should succeed
+	ret = temp_alarm_check();
+	zassert_ok(ret, "Check should succeed");
+
+	ret = temp_alarm_get_status(&status);
+	zassert_ok(ret, "get_status should succeed");
+	zassert_equal(status.last_temp, 20, "last_temp must be 20, got %d", status.last_temp);
+	zassert_false(status.is_alarming, "is_alarming must be false");
+	zassert_equal(status.last_error, -EIO, "last_error should be -EIO, got %d", status.last_error);
 }
 
 /*
@@ -79,7 +132,11 @@ ZTEST(temp_alarm_invalid_input, test_get_status_null)
 	/* TODO(l8-task2): a NULL status pointer is rejected.
 	 * See TEST_SPEC.md "Suite temp_alarm_invalid_input" #1.
 	 */
-	ztest_test_skip();
+	int ret;
+
+	ret = temp_alarm_get_status(NULL);
+	zassert_not_ok(ret, "get_status should fail");
+	zassert_equal(ret, -EINVAL, "The return status should be -EINVAL, got %d", ret);
 }
 
 ZTEST(temp_alarm_invalid_input, test_init_without_device)
@@ -87,7 +144,11 @@ ZTEST(temp_alarm_invalid_input, test_init_without_device)
 	/* TODO(l8-task2): init without a sensor device is rejected.
 	 * See TEST_SPEC.md "Suite temp_alarm_invalid_input" #2.
 	 */
-	ztest_test_skip();
+	int ret;
+
+	ret = temp_alarm_init(NULL, DEFAULT_THRESHOLD);
+	zassert_not_ok(ret, "init should fail");
+	zassert_equal(ret, -ENODEV, "The return status should be -ENODEV, got %d", ret);
 }
 
 ZTEST(temp_alarm_invalid_input, test_init_threshold_out_of_range)
@@ -95,7 +156,14 @@ ZTEST(temp_alarm_invalid_input, test_init_threshold_out_of_range)
 	/* TODO(l8-task2): init rejects thresholds outside the allowed range.
 	 * See TEST_SPEC.md "Suite temp_alarm_invalid_input" #3.
 	 */
-	ztest_test_skip();
+	int ret;
+	int thresholds[] = {-1, 101};
+
+	for(uint8_t i = 0; i < ARRAY_SIZE(thresholds); i++) {
+	    ret = temp_alarm_init(&fake_sensor_dev, thresholds[i]);
+		zassert_not_ok(ret, "init should fail");
+		zassert_equal(ret, -EINVAL, "The return status should be -EINVAL, got %d", ret);
+	}
 }
 
 ZTEST(temp_alarm_invalid_input, test_set_threshold_out_of_range)
@@ -104,5 +172,34 @@ ZTEST(temp_alarm_invalid_input, test_set_threshold_out_of_range)
 	 * and keeps the old threshold.
 	 * See TEST_SPEC.md "Suite temp_alarm_invalid_input" #4.
 	 */
-	ztest_test_skip();
+	int ret;
+	int thresholds[] = {-1, 101};
+	struct temp_alarm_status status;
+
+	// In order to verify that invalid values passed to set_threshold() do not modify the
+	// current threshold of 30°C, I will take advantage that the function set_threshold()
+	// resets the alarm when a valid threshold is set. So, if the alarm is triggered with
+	// a threshold of 30°C, and 2 invalid values are passed to set_threshold(), then the
+	// alarm should never be cleared. I will set a temperature of 31°C (next int immediately
+	// after 30), then set the 2 invalid values, and finally check that is_alarming is
+	// still is_alarming == true
+	sensor_fake_set_temperature(DEFAULT_THRESHOLD+1);
+	ret = temp_alarm_check();
+	zassert_ok(ret, "Check should succeed, but got error %d", ret);
+	ret = temp_alarm_get_status(&status);
+	zassert_ok(ret, "get_status should succeed");
+	zassert_true(status.is_alarming, "is_alarming must be true");
+
+	// The 2 invalid threshold are passed to set_threshold()
+	for(uint8_t i = 0; i < ARRAY_SIZE(thresholds); i++) {
+	    ret = temp_alarm_set_threshold(thresholds[i]);
+		zassert_not_ok(ret, "set_threshold should fail with value %d °C", i);
+		zassert_equal(ret, -EINVAL, "The return status should be -EINVAL, got %d", ret);
+	}
+
+	// Finally, because both threshold were not valid, is_alarming should not have
+	// changed
+	ret = temp_alarm_get_status(&status);
+	zassert_ok(ret, "get_status should succeed");
+	zassert_true(status.is_alarming, "is_alarming should still be true");
 }

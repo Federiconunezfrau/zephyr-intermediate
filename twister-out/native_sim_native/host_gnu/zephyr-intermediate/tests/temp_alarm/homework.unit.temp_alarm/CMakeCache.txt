@@ -364,7 +364,7 @@ SOC_FULL_DIR:PATH=/home/federico/Documents/Zephyr_Intermediate_Course_IOMICO/tas
 TC_NAME:UNINITIALIZED=homework.unit.temp_alarm
 
 //No help, variable specified on the command line.
-TC_RUNID:UNINITIALIZED=996848db944735d4eb0ff59d643d6b01
+TC_RUNID:UNINITIALIZED=37dbfce3d7c4a0aa5450c852491a783c
 
 //True if toolchain supports libstdc++
 TOOLCHAIN_HAS_GLIBCXX:BOOL=ON

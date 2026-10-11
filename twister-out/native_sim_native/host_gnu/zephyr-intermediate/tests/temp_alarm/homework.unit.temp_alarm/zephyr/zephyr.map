@@ -1466,9 +1466,11 @@ Linker script and memory map
  .text.before   0x00000049       0x49 app/libapp.a(test_error_paths.c.obj)
 
 .text.z_zassert.constprop.0
-                0x00000000       0x5c
+                0x00000000       0xb8
  .text.z_zassert.constprop.0
                 0x00000000       0x5c app/libapp.a(test_basic.c.obj)
+ .text.z_zassert.constprop.0
+                0x0000005c       0x5c app/libapp.a(test_error_paths.c.obj)
 
 .text._temp_alarm_reset_test_reset_clears_state_wrapper
                 0x00000000      0x1a4
@@ -1500,40 +1502,40 @@ Linker script and memory map
  .text._temp_alarm_get_status_test_status_after_init_wrapper
                 0x00000000       0xe3 app/libapp.a(test_basic.c.obj)
 
-.text._temp_alarm_sensor_errors_test_fetch_error_propagates_wrapper
-                0x00000000        0x5
- .text._temp_alarm_sensor_errors_test_fetch_error_propagates_wrapper
-                0x00000000        0x5 app/libapp.a(test_error_paths.c.obj)
-
 .text._temp_alarm_invalid_input_test_set_threshold_out_of_range_wrapper
-                0x00000000        0x5
+                0x00000000      0x185
  .text._temp_alarm_invalid_input_test_set_threshold_out_of_range_wrapper
-                0x00000000        0x5 app/libapp.a(test_error_paths.c.obj)
-
-.text._temp_alarm_sensor_errors_test_channel_get_error_propagates_wrapper
-                0x00000000        0x5
- .text._temp_alarm_sensor_errors_test_channel_get_error_propagates_wrapper
-                0x00000000        0x5 app/libapp.a(test_error_paths.c.obj)
+                0x00000000      0x185 app/libapp.a(test_error_paths.c.obj)
 
 .text._temp_alarm_sensor_errors_test_fail_then_recover_wrapper
-                0x00000000        0x5
+                0x00000000      0x16b
  .text._temp_alarm_sensor_errors_test_fail_then_recover_wrapper
-                0x00000000        0x5 app/libapp.a(test_error_paths.c.obj)
-
-.text._temp_alarm_invalid_input_test_get_status_null_wrapper
-                0x00000000        0x5
- .text._temp_alarm_invalid_input_test_get_status_null_wrapper
-                0x00000000        0x5 app/libapp.a(test_error_paths.c.obj)
-
-.text._temp_alarm_invalid_input_test_init_without_device_wrapper
-                0x00000000        0x5
- .text._temp_alarm_invalid_input_test_init_without_device_wrapper
-                0x00000000        0x5 app/libapp.a(test_error_paths.c.obj)
+                0x00000000      0x16b app/libapp.a(test_error_paths.c.obj)
 
 .text._temp_alarm_invalid_input_test_init_threshold_out_of_range_wrapper
-                0x00000000        0x5
+                0x00000000       0x90
  .text._temp_alarm_invalid_input_test_init_threshold_out_of_range_wrapper
-                0x00000000        0x5 app/libapp.a(test_error_paths.c.obj)
+                0x00000000       0x90 app/libapp.a(test_error_paths.c.obj)
+
+.text._temp_alarm_invalid_input_test_init_without_device_wrapper
+                0x00000000       0x6d
+ .text._temp_alarm_invalid_input_test_init_without_device_wrapper
+                0x00000000       0x6d app/libapp.a(test_error_paths.c.obj)
+
+.text._temp_alarm_invalid_input_test_get_status_null_wrapper
+                0x00000000       0x6b
+ .text._temp_alarm_invalid_input_test_get_status_null_wrapper
+                0x00000000       0x6b app/libapp.a(test_error_paths.c.obj)
+
+.text._temp_alarm_sensor_errors_test_channel_get_error_propagates_wrapper
+                0x00000000       0xfe
+ .text._temp_alarm_sensor_errors_test_channel_get_error_propagates_wrapper
+                0x00000000       0xfe app/libapp.a(test_error_paths.c.obj)
+
+.text._temp_alarm_sensor_errors_test_fetch_error_propagates_wrapper
+                0x00000000       0xf8
+ .text._temp_alarm_sensor_errors_test_fetch_error_propagates_wrapper
+                0x00000000       0xf8 app/libapp.a(test_error_paths.c.obj)
 
 .text.z_log_msg_runtime_create.constprop.0
                 0x00000000       0x6f
@@ -2587,9 +2589,11 @@ Linker script and memory map
                 0x000000db       0xe1 app/libapp.a(test_error_paths.c.obj)
 
 .rodata.z_zassert.constprop.0.str1.1
-                0x00000000       0x28
+                0x00000000       0x50
  .rodata.z_zassert.constprop.0.str1.1
                 0x00000000       0x28 app/libapp.a(test_basic.c.obj)
+ .rodata.z_zassert.constprop.0.str1.1
+                0x00000028       0x28 app/libapp.a(test_error_paths.c.obj)
 
 .rodata._temp_alarm_reset_test_reset_clears_state_wrapper.str1.1
                 0x00000000      0x1cb
@@ -2622,45 +2626,103 @@ Linker script and memory map
                 0x00000000      0x127 app/libapp.a(test_basic.c.obj)
 
 .rodata.__func__.0
-                0x00000000       0x33
+                0x00000000       0x79
  .rodata.__func__.0
                 0x00000000       0x29 app/libapp.a(test_basic.c.obj)
- *fill*         0x00000029        0x3 
+ *fill*         0x00000029       0x17 
  .rodata.__func__.0
-                0x0000002c        0x7 app/libapp.a(test_error_paths.c.obj)
+                0x00000040       0x39 app/libapp.a(test_error_paths.c.obj)
 
 .rodata.__func__.1
-                0x00000000       0x55
+                0x00000000       0x99
  .rodata.__func__.1
                 0x00000000       0x35 app/libapp.a(test_basic.c.obj)
- *fill*         0x00000035        0x3 
+ *fill*         0x00000035        0xb 
  .rodata.__func__.1
-                0x00000038       0x1d zephyr/boards/native/native_sim/libboards__native__native_sim.a(irq_handler.c.obj)
+                0x00000040       0x3a app/libapp.a(test_error_paths.c.obj)
+ *fill*         0x0000007a        0x2 
+ .rodata.__func__.1
+                0x0000007c       0x1d zephyr/boards/native/native_sim/libboards__native__native_sim.a(irq_handler.c.obj)
 
 .rodata.__func__.2
-                0x00000000       0x26
+                0x00000000       0x72
  .rodata.__func__.2
                 0x00000000       0x26 app/libapp.a(test_basic.c.obj)
+ *fill*         0x00000026       0x1a 
+ .rodata.__func__.2
+                0x00000040       0x32 app/libapp.a(test_error_paths.c.obj)
 
 .rodata.__func__.3
-                0x00000000       0x23
+                0x00000000       0x6e
  .rodata.__func__.3
                 0x00000000       0x23 app/libapp.a(test_basic.c.obj)
+ *fill*         0x00000023       0x1d 
+ .rodata.__func__.3
+                0x00000040       0x2e app/libapp.a(test_error_paths.c.obj)
 
 .rodata.__func__.4
-                0x00000000       0x26
+                0x00000000       0x70
  .rodata.__func__.4
                 0x00000000       0x26 app/libapp.a(test_basic.c.obj)
+ *fill*         0x00000026       0x1a 
+ .rodata.__func__.4
+                0x00000040       0x30 app/libapp.a(test_error_paths.c.obj)
 
 .rodata.__func__.5
-                0x00000000       0x2d
+                0x00000000       0x7b
  .rodata.__func__.5
                 0x00000000       0x2d app/libapp.a(test_basic.c.obj)
+ *fill*         0x0000002d       0x13 
+ .rodata.__func__.5
+                0x00000040       0x3b app/libapp.a(test_error_paths.c.obj)
 
 .rodata.__func__.6
-                0x00000000        0x7
+                0x00000000       0x55
  .rodata.__func__.6
                 0x00000000        0x7 app/libapp.a(test_basic.c.obj)
+ *fill*         0x00000007       0x19 
+ .rodata.__func__.6
+                0x00000020       0x35 app/libapp.a(test_error_paths.c.obj)
+
+.rodata._temp_alarm_invalid_input_test_set_threshold_out_of_range_wrapper.str1.1
+                0x00000000      0x12c
+ .rodata._temp_alarm_invalid_input_test_set_threshold_out_of_range_wrapper.str1.1
+                0x00000000      0x12c app/libapp.a(test_error_paths.c.obj)
+
+.rodata._temp_alarm_sensor_errors_test_fail_then_recover_wrapper.str1.1
+                0x00000000      0x128
+ .rodata._temp_alarm_sensor_errors_test_fail_then_recover_wrapper.str1.1
+                0x00000000      0x128 app/libapp.a(test_error_paths.c.obj)
+
+.rodata._temp_alarm_invalid_input_test_init_threshold_out_of_range_wrapper.str1.1
+                0x00000000       0x11
+ .rodata._temp_alarm_invalid_input_test_init_threshold_out_of_range_wrapper.str1.1
+                0x00000000       0x11 app/libapp.a(test_error_paths.c.obj)
+
+.rodata._temp_alarm_invalid_input_test_init_without_device_wrapper.str1.1
+                0x00000000       0x47
+ .rodata._temp_alarm_invalid_input_test_init_without_device_wrapper.str1.1
+                0x00000000       0x47 app/libapp.a(test_error_paths.c.obj)
+
+.rodata._temp_alarm_invalid_input_test_get_status_null_wrapper.str1.1
+                0x00000000       0x17
+ .rodata._temp_alarm_invalid_input_test_get_status_null_wrapper.str1.1
+                0x00000000       0x17 app/libapp.a(test_error_paths.c.obj)
+
+.rodata._temp_alarm_sensor_errors_test_channel_get_error_propagates_wrapper.str1.1
+                0x00000000       0x80
+ .rodata._temp_alarm_sensor_errors_test_channel_get_error_propagates_wrapper.str1.1
+                0x00000000       0x80 app/libapp.a(test_error_paths.c.obj)
+
+.rodata._temp_alarm_sensor_errors_test_fetch_error_propagates_wrapper.str1.1
+                0x00000000       0x99
+ .rodata._temp_alarm_sensor_errors_test_fetch_error_propagates_wrapper.str1.1
+                0x00000000       0x99 app/libapp.a(test_error_paths.c.obj)
+
+.rodata.__func__.7
+                0x00000000        0x7
+ .rodata.__func__.7
+                0x00000000        0x7 app/libapp.a(test_error_paths.c.obj)
 
 .rodata.temp_alarm_init.str1.1
                 0x00000000       0x4a
@@ -4672,7 +4734,7 @@ noinit
 .debug_sfnames
  *(SORT_BY_ALIGNMENT(.debug_sfnames))
 
-.debug_aranges  0x00000000     0x10a0
+.debug_aranges  0x00000000     0x10a8
  *(SORT_BY_ALIGNMENT(.debug_aranges))
  .debug_aranges
                 0x00000000       0x20 zephyr/CMakeFiles/offsets.dir/./arch/posix/core/offsets/offsets.c.obj
@@ -4681,386 +4743,386 @@ noinit
  .debug_aranges
                 0x00000078       0x60 app/libapp.a(test_basic.c.obj)
  .debug_aranges
-                0x000000d8       0x60 app/libapp.a(test_error_paths.c.obj)
+                0x000000d8       0x68 app/libapp.a(test_error_paths.c.obj)
  .debug_aranges
-                0x00000138       0x48 app/libapp.a(temp_alarm.c.obj)
+                0x00000140       0x48 app/libapp.a(temp_alarm.c.obj)
  .debug_aranges
-                0x00000180       0xb8 zephyr/libzephyr.a(heap.c.obj)
+                0x00000188       0xb8 zephyr/libzephyr.a(heap.c.obj)
  .debug_aranges
-                0x00000238       0x48 zephyr/libzephyr.a(cbprintf_packaged.c.obj)
+                0x00000240       0x48 zephyr/libzephyr.a(cbprintf_packaged.c.obj)
  .debug_aranges
-                0x00000280       0x68 zephyr/libzephyr.a(clock.c.obj)
+                0x00000288       0x68 zephyr/libzephyr.a(clock.c.obj)
  .debug_aranges
-                0x000002e8       0x60 zephyr/libzephyr.a(printk.c.obj)
+                0x000002f0       0x60 zephyr/libzephyr.a(printk.c.obj)
  .debug_aranges
-                0x00000348       0x20 zephyr/libzephyr.a(thread_entry.c.obj)
+                0x00000350       0x20 zephyr/libzephyr.a(thread_entry.c.obj)
  .debug_aranges
-                0x00000368       0x30 zephyr/libzephyr.a(cbprintf_complete.c.obj)
+                0x00000370       0x30 zephyr/libzephyr.a(cbprintf_complete.c.obj)
  .debug_aranges
-                0x00000398       0x28 zephyr/libzephyr.a(assert.c.obj)
+                0x000003a0       0x28 zephyr/libzephyr.a(assert.c.obj)
  .debug_aranges
-                0x000003c0       0x28 zephyr/libzephyr.a(getopt.c.obj)
+                0x000003c8       0x28 zephyr/libzephyr.a(getopt.c.obj)
  .debug_aranges
-                0x000003e8       0x20 zephyr/libzephyr.a(configs.c.obj)
+                0x000003f0       0x20 zephyr/libzephyr.a(configs.c.obj)
  .debug_aranges
-                0x00000408      0x150 zephyr/libzephyr.a(log_core.c.obj)
+                0x00000410      0x150 zephyr/libzephyr.a(log_core.c.obj)
  .debug_aranges
-                0x00000558       0xc0 zephyr/libzephyr.a(log_mgmt.c.obj)
+                0x00000560       0xc0 zephyr/libzephyr.a(log_mgmt.c.obj)
  .debug_aranges
-                0x00000618       0x68 zephyr/libzephyr.a(log_msg.c.obj)
+                0x00000620       0x68 zephyr/libzephyr.a(log_msg.c.obj)
  .debug_aranges
-                0x00000680       0x70 zephyr/libzephyr.a(log_output.c.obj)
+                0x00000688       0x70 zephyr/libzephyr.a(log_output.c.obj)
  .debug_aranges
-                0x000006f0       0x38 zephyr/libzephyr.a(log_backend_native_posix.c.obj)
+                0x000006f8       0x38 zephyr/libzephyr.a(log_backend_native_posix.c.obj)
  .debug_aranges
-                0x00000728       0x40 zephyr/libzephyr.a(tracing_none.c.obj)
+                0x00000730       0x40 zephyr/libzephyr.a(tracing_none.c.obj)
  .debug_aranges
-                0x00000768       0x28 zephyr/arch/arch/posix/core/libarch__posix__core.a(cpuhalt.c.obj)
+                0x00000770       0x28 zephyr/arch/arch/posix/core/libarch__posix__core.a(cpuhalt.c.obj)
  .debug_aranges
-                0x00000790       0x20 zephyr/arch/arch/posix/core/libarch__posix__core.a(fatal.c.obj)
+                0x00000798       0x20 zephyr/arch/arch/posix/core/libarch__posix__core.a(fatal.c.obj)
  .debug_aranges
-                0x000007b0       0x30 zephyr/arch/arch/posix/core/libarch__posix__core.a(irq.c.obj)
+                0x000007b8       0x30 zephyr/arch/arch/posix/core/libarch__posix__core.a(irq.c.obj)
  .debug_aranges
-                0x000007e0       0x28 zephyr/arch/arch/posix/core/libarch__posix__core.a(swap.c.obj)
+                0x000007e8       0x28 zephyr/arch/arch/posix/core/libarch__posix__core.a(swap.c.obj)
  .debug_aranges
-                0x00000808       0x40 zephyr/arch/arch/posix/core/libarch__posix__core.a(thread.c.obj)
+                0x00000810       0x40 zephyr/arch/arch/posix/core/libarch__posix__core.a(thread.c.obj)
  .debug_aranges
-                0x00000848       0x58 zephyr/arch/arch/posix/core/libarch__posix__core.a(posix_core_nsi.c.obj)
+                0x00000850       0x58 zephyr/arch/arch/posix/core/libarch__posix__core.a(posix_core_nsi.c.obj)
  .debug_aranges
-                0x000008a0       0x50 zephyr/soc/soc/native/libsoc__native__inf_clock.a(soc.c.obj)
+                0x000008a8       0x50 zephyr/soc/soc/native/libsoc__native__inf_clock.a(soc.c.obj)
  .debug_aranges
-                0x000008f0       0x20 zephyr/soc/soc/native/libsoc__native__inf_clock.a(native_tasks.c.obj)
+                0x000008f8       0x20 zephyr/soc/soc/native/libsoc__native__inf_clock.a(native_tasks.c.obj)
  .debug_aranges
-                0x00000910       0x30 zephyr/boards/native/native_sim/libboards__native__native_sim.a(cmdline.c.obj)
+                0x00000918       0x30 zephyr/boards/native/native_sim/libboards__native__native_sim.a(cmdline.c.obj)
  .debug_aranges
-                0x00000940       0x40 zephyr/boards/native/native_sim/libboards__native__native_sim.a(nsi_if.c.obj)
+                0x00000948       0x40 zephyr/boards/native/native_sim/libboards__native__native_sim.a(nsi_if.c.obj)
  .debug_aranges
-                0x00000980       0x80 zephyr/boards/native/native_sim/libboards__native__native_sim.a(irq_handler.c.obj)
+                0x00000988       0x80 zephyr/boards/native/native_sim/libboards__native__native_sim.a(irq_handler.c.obj)
  .debug_aranges
-                0x00000a00       0x60 zephyr/boards/native/native_sim/libboards__native__native_sim.a(posix_arch_if.c.obj)
+                0x00000a08       0x60 zephyr/boards/native/native_sim/libboards__native__native_sim.a(posix_arch_if.c.obj)
  .debug_aranges
-                0x00000a60       0x20 zephyr/subsys/random/libsubsys__random.a(random_timer.c.obj)
+                0x00000a68       0x20 zephyr/subsys/random/libsubsys__random.a(random_timer.c.obj)
  .debug_aranges
-                0x00000a80       0xd8 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest.c.obj)
+                0x00000a88       0xd8 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest.c.obj)
  .debug_aranges
-                0x00000b58       0x78 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest_posix.c.obj)
+                0x00000b60       0x78 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest_posix.c.obj)
  .debug_aranges
-                0x00000bd0       0x30 zephyr/drivers/console/libdrivers__console.a(posix_arch_console.c.obj)
+                0x00000bd8       0x30 zephyr/drivers/console/libdrivers__console.a(posix_arch_console.c.obj)
  .debug_aranges
-                0x00000c00       0x58 zephyr/drivers/timer/libdrivers__timer.a(native_sim_timer.c.obj)
+                0x00000c08       0x58 zephyr/drivers/timer/libdrivers__timer.a(native_sim_timer.c.obj)
  .debug_aranges
-                0x00000c58       0x48 zephyr/kernel/libkernel.a(device.c.obj)
+                0x00000c60       0x48 zephyr/kernel/libkernel.a(device.c.obj)
  .debug_aranges
-                0x00000ca0       0x40 zephyr/kernel/libkernel.a(fatal.c.obj)
+                0x00000ca8       0x40 zephyr/kernel/libkernel.a(fatal.c.obj)
  .debug_aranges
-                0x00000ce0       0x40 zephyr/kernel/libkernel.a(init.c.obj)
+                0x00000ce8       0x40 zephyr/kernel/libkernel.a(init.c.obj)
  .debug_aranges
-                0x00000d20       0x28 zephyr/kernel/libkernel.a(idle.c.obj)
+                0x00000d28       0x28 zephyr/kernel/libkernel.a(idle.c.obj)
  .debug_aranges
-                0x00000d48       0x90 zephyr/kernel/libkernel.a(thread.c.obj)
+                0x00000d50       0x90 zephyr/kernel/libkernel.a(thread.c.obj)
  .debug_aranges
-                0x00000dd8      0x180 zephyr/kernel/libkernel.a(sched.c.obj)
+                0x00000de0      0x180 zephyr/kernel/libkernel.a(sched.c.obj)
  .debug_aranges
-                0x00000f58       0x40 zephyr/kernel/libkernel.a(timeslicing.c.obj)
+                0x00000f60       0x40 zephyr/kernel/libkernel.a(timeslicing.c.obj)
  .debug_aranges
-                0x00000f98       0x30 zephyr/kernel/libkernel.a(spinlock_validate.c.obj)
+                0x00000fa0       0x30 zephyr/kernel/libkernel.a(spinlock_validate.c.obj)
  .debug_aranges
-                0x00000fc8       0xb8 zephyr/kernel/libkernel.a(timeout.c.obj)
+                0x00000fd0       0xb8 zephyr/kernel/libkernel.a(timeout.c.obj)
  .debug_aranges
-                0x00001080       0x20 zephyr/kernel/libkernel.a(banner.c.obj)
+                0x00001088       0x20 zephyr/kernel/libkernel.a(banner.c.obj)
 
 .debug_pubnames
  *(SORT_BY_ALIGNMENT(.debug_pubnames))
 
-.debug_info     0x00000000    0x2cd02
+.debug_info     0x00000000    0x2df45
  *(SORT_BY_ALIGNMENT(.debug_info))
  .debug_info    0x00000000       0xe3 zephyr/CMakeFiles/offsets.dir/./arch/posix/core/offsets/offsets.c.obj
  .debug_info    0x000000e3     0x134d app/libapp.a(sensor_fake.c.obj)
  .debug_info    0x00001430     0x1c36 app/libapp.a(test_basic.c.obj)
- .debug_info    0x00003066      0x8bb app/libapp.a(test_error_paths.c.obj)
- .debug_info    0x00003921     0x1561 app/libapp.a(temp_alarm.c.obj)
- .debug_info    0x00004e82     0x3fa1 zephyr/libzephyr.a(heap.c.obj)
- .debug_info    0x00008e23     0x140c zephyr/libzephyr.a(cbprintf_packaged.c.obj)
- .debug_info    0x0000a22f     0x149d zephyr/libzephyr.a(clock.c.obj)
- .debug_info    0x0000b6cc      0x5e2 zephyr/libzephyr.a(printk.c.obj)
- .debug_info    0x0000bcae      0x6a0 zephyr/libzephyr.a(thread_entry.c.obj)
- .debug_info    0x0000c34e      0xfcb zephyr/libzephyr.a(cbprintf_complete.c.obj)
- .debug_info    0x0000d319      0x1e8 zephyr/libzephyr.a(assert.c.obj)
- .debug_info    0x0000d501      0x43f zephyr/libzephyr.a(getopt.c.obj)
- .debug_info    0x0000d940       0x3f zephyr/libzephyr.a(configs.c.obj)
- .debug_info    0x0000d97f     0x2cde zephyr/libzephyr.a(log_core.c.obj)
- .debug_info    0x0001065d     0x2314 zephyr/libzephyr.a(log_mgmt.c.obj)
- .debug_info    0x00012971     0x12f7 zephyr/libzephyr.a(log_msg.c.obj)
- .debug_info    0x00013c68     0x1eca zephyr/libzephyr.a(log_output.c.obj)
- .debug_info    0x00015b32      0x9c8 zephyr/libzephyr.a(log_backend_native_posix.c.obj)
- .debug_info    0x000164fa       0xc0 zephyr/libzephyr.a(tracing_none.c.obj)
- .debug_info    0x000165ba      0x107 zephyr/arch/arch/posix/core/libarch__posix__core.a(cpuhalt.c.obj)
- .debug_info    0x000166c1       0xda zephyr/arch/arch/posix/core/libarch__posix__core.a(fatal.c.obj)
- .debug_info    0x0001679b      0x16a zephyr/arch/arch/posix/core/libarch__posix__core.a(irq.c.obj)
- .debug_info    0x00016905      0x72f zephyr/arch/arch/posix/core/libarch__posix__core.a(swap.c.obj)
- .debug_info    0x00017034      0x9a4 zephyr/arch/arch/posix/core/libarch__posix__core.a(thread.c.obj)
- .debug_info    0x000179d8      0x2da zephyr/arch/arch/posix/core/libarch__posix__core.a(posix_core_nsi.c.obj)
- .debug_info    0x00017cb2      0x348 zephyr/soc/soc/native/libsoc__native__inf_clock.a(soc.c.obj)
- .debug_info    0x00017ffa       0xf0 zephyr/soc/soc/native/libsoc__native__inf_clock.a(native_tasks.c.obj)
- .debug_info    0x000180ea      0x235 zephyr/boards/native/native_sim/libboards__native__native_sim.a(cmdline.c.obj)
- .debug_info    0x0001831f      0x164 zephyr/boards/native/native_sim/libboards__native__native_sim.a(nsi_if.c.obj)
- .debug_info    0x00018483      0xd2a zephyr/boards/native/native_sim/libboards__native__native_sim.a(irq_handler.c.obj)
- .debug_info    0x000191ad      0x388 zephyr/boards/native/native_sim/libboards__native__native_sim.a(posix_arch_if.c.obj)
- .debug_info    0x00019535      0x5b4 zephyr/subsys/random/libsubsys__random.a(random_timer.c.obj)
- .debug_info    0x00019ae9     0x2a79 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest.c.obj)
- .debug_info    0x0001c562      0xb53 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest_posix.c.obj)
- .debug_info    0x0001d0b5      0x39a zephyr/drivers/console/libdrivers__console.a(posix_arch_console.c.obj)
- .debug_info    0x0001d44f      0x611 zephyr/drivers/timer/libdrivers__timer.a(native_sim_timer.c.obj)
- .debug_info    0x0001da60      0x439 zephyr/kernel/libkernel.a(device.c.obj)
- .debug_info    0x0001de99      0xc43 zephyr/kernel/libkernel.a(fatal.c.obj)
- .debug_info    0x0001eadc     0x14ea zephyr/kernel/libkernel.a(init.c.obj)
- .debug_info    0x0001ffc6      0x7a2 zephyr/kernel/libkernel.a(idle.c.obj)
- .debug_info    0x00020768     0x1530 zephyr/kernel/libkernel.a(thread.c.obj)
- .debug_info    0x00021c98     0x7d53 zephyr/kernel/libkernel.a(sched.c.obj)
- .debug_info    0x000299eb      0xed2 zephyr/kernel/libkernel.a(timeslicing.c.obj)
- .debug_info    0x0002a8bd      0x624 zephyr/kernel/libkernel.a(spinlock_validate.c.obj)
- .debug_info    0x0002aee1     0x1d5f zephyr/kernel/libkernel.a(timeout.c.obj)
- .debug_info    0x0002cc40       0xc2 zephyr/kernel/libkernel.a(banner.c.obj)
+ .debug_info    0x00003066     0x1afe app/libapp.a(test_error_paths.c.obj)
+ .debug_info    0x00004b64     0x1561 app/libapp.a(temp_alarm.c.obj)
+ .debug_info    0x000060c5     0x3fa1 zephyr/libzephyr.a(heap.c.obj)
+ .debug_info    0x0000a066     0x140c zephyr/libzephyr.a(cbprintf_packaged.c.obj)
+ .debug_info    0x0000b472     0x149d zephyr/libzephyr.a(clock.c.obj)
+ .debug_info    0x0000c90f      0x5e2 zephyr/libzephyr.a(printk.c.obj)
+ .debug_info    0x0000cef1      0x6a0 zephyr/libzephyr.a(thread_entry.c.obj)
+ .debug_info    0x0000d591      0xfcb zephyr/libzephyr.a(cbprintf_complete.c.obj)
+ .debug_info    0x0000e55c      0x1e8 zephyr/libzephyr.a(assert.c.obj)
+ .debug_info    0x0000e744      0x43f zephyr/libzephyr.a(getopt.c.obj)
+ .debug_info    0x0000eb83       0x3f zephyr/libzephyr.a(configs.c.obj)
+ .debug_info    0x0000ebc2     0x2cde zephyr/libzephyr.a(log_core.c.obj)
+ .debug_info    0x000118a0     0x2314 zephyr/libzephyr.a(log_mgmt.c.obj)
+ .debug_info    0x00013bb4     0x12f7 zephyr/libzephyr.a(log_msg.c.obj)
+ .debug_info    0x00014eab     0x1eca zephyr/libzephyr.a(log_output.c.obj)
+ .debug_info    0x00016d75      0x9c8 zephyr/libzephyr.a(log_backend_native_posix.c.obj)
+ .debug_info    0x0001773d       0xc0 zephyr/libzephyr.a(tracing_none.c.obj)
+ .debug_info    0x000177fd      0x107 zephyr/arch/arch/posix/core/libarch__posix__core.a(cpuhalt.c.obj)
+ .debug_info    0x00017904       0xda zephyr/arch/arch/posix/core/libarch__posix__core.a(fatal.c.obj)
+ .debug_info    0x000179de      0x16a zephyr/arch/arch/posix/core/libarch__posix__core.a(irq.c.obj)
+ .debug_info    0x00017b48      0x72f zephyr/arch/arch/posix/core/libarch__posix__core.a(swap.c.obj)
+ .debug_info    0x00018277      0x9a4 zephyr/arch/arch/posix/core/libarch__posix__core.a(thread.c.obj)
+ .debug_info    0x00018c1b      0x2da zephyr/arch/arch/posix/core/libarch__posix__core.a(posix_core_nsi.c.obj)
+ .debug_info    0x00018ef5      0x348 zephyr/soc/soc/native/libsoc__native__inf_clock.a(soc.c.obj)
+ .debug_info    0x0001923d       0xf0 zephyr/soc/soc/native/libsoc__native__inf_clock.a(native_tasks.c.obj)
+ .debug_info    0x0001932d      0x235 zephyr/boards/native/native_sim/libboards__native__native_sim.a(cmdline.c.obj)
+ .debug_info    0x00019562      0x164 zephyr/boards/native/native_sim/libboards__native__native_sim.a(nsi_if.c.obj)
+ .debug_info    0x000196c6      0xd2a zephyr/boards/native/native_sim/libboards__native__native_sim.a(irq_handler.c.obj)
+ .debug_info    0x0001a3f0      0x388 zephyr/boards/native/native_sim/libboards__native__native_sim.a(posix_arch_if.c.obj)
+ .debug_info    0x0001a778      0x5b4 zephyr/subsys/random/libsubsys__random.a(random_timer.c.obj)
+ .debug_info    0x0001ad2c     0x2a79 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest.c.obj)
+ .debug_info    0x0001d7a5      0xb53 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest_posix.c.obj)
+ .debug_info    0x0001e2f8      0x39a zephyr/drivers/console/libdrivers__console.a(posix_arch_console.c.obj)
+ .debug_info    0x0001e692      0x611 zephyr/drivers/timer/libdrivers__timer.a(native_sim_timer.c.obj)
+ .debug_info    0x0001eca3      0x439 zephyr/kernel/libkernel.a(device.c.obj)
+ .debug_info    0x0001f0dc      0xc43 zephyr/kernel/libkernel.a(fatal.c.obj)
+ .debug_info    0x0001fd1f     0x14ea zephyr/kernel/libkernel.a(init.c.obj)
+ .debug_info    0x00021209      0x7a2 zephyr/kernel/libkernel.a(idle.c.obj)
+ .debug_info    0x000219ab     0x1530 zephyr/kernel/libkernel.a(thread.c.obj)
+ .debug_info    0x00022edb     0x7d53 zephyr/kernel/libkernel.a(sched.c.obj)
+ .debug_info    0x0002ac2e      0xed2 zephyr/kernel/libkernel.a(timeslicing.c.obj)
+ .debug_info    0x0002bb00      0x624 zephyr/kernel/libkernel.a(spinlock_validate.c.obj)
+ .debug_info    0x0002c124     0x1d5f zephyr/kernel/libkernel.a(timeout.c.obj)
+ .debug_info    0x0002de83       0xc2 zephyr/kernel/libkernel.a(banner.c.obj)
 
-.debug_abbrev   0x00000000     0x935d
+.debug_abbrev   0x00000000     0x93d7
  *(SORT_BY_ALIGNMENT(.debug_abbrev))
  .debug_abbrev  0x00000000       0x62 zephyr/CMakeFiles/offsets.dir/./arch/posix/core/offsets/offsets.c.obj
  .debug_abbrev  0x00000062      0x34d app/libapp.a(sensor_fake.c.obj)
  .debug_abbrev  0x000003af      0x37b app/libapp.a(test_basic.c.obj)
- .debug_abbrev  0x0000072a      0x2f8 app/libapp.a(test_error_paths.c.obj)
- .debug_abbrev  0x00000a22      0x3f5 app/libapp.a(temp_alarm.c.obj)
- .debug_abbrev  0x00000e17      0x4fa zephyr/libzephyr.a(heap.c.obj)
- .debug_abbrev  0x00001311      0x4f3 zephyr/libzephyr.a(cbprintf_packaged.c.obj)
- .debug_abbrev  0x00001804      0x4aa zephyr/libzephyr.a(clock.c.obj)
- .debug_abbrev  0x00001cae      0x2f5 zephyr/libzephyr.a(printk.c.obj)
- .debug_abbrev  0x00001fa3      0x28d zephyr/libzephyr.a(thread_entry.c.obj)
- .debug_abbrev  0x00002230      0x400 zephyr/libzephyr.a(cbprintf_complete.c.obj)
- .debug_abbrev  0x00002630      0x13d zephyr/libzephyr.a(assert.c.obj)
- .debug_abbrev  0x0000276d      0x1e5 zephyr/libzephyr.a(getopt.c.obj)
- .debug_abbrev  0x00002952       0x39 zephyr/libzephyr.a(configs.c.obj)
- .debug_abbrev  0x0000298b      0x8a2 zephyr/libzephyr.a(log_core.c.obj)
- .debug_abbrev  0x0000322d      0x678 zephyr/libzephyr.a(log_mgmt.c.obj)
- .debug_abbrev  0x000038a5      0x588 zephyr/libzephyr.a(log_msg.c.obj)
- .debug_abbrev  0x00003e2d      0x5d4 zephyr/libzephyr.a(log_output.c.obj)
- .debug_abbrev  0x00004401      0x342 zephyr/libzephyr.a(log_backend_native_posix.c.obj)
- .debug_abbrev  0x00004743       0x5e zephyr/libzephyr.a(tracing_none.c.obj)
- .debug_abbrev  0x000047a1       0xd3 zephyr/arch/arch/posix/core/libarch__posix__core.a(cpuhalt.c.obj)
- .debug_abbrev  0x00004874       0x94 zephyr/arch/arch/posix/core/libarch__posix__core.a(fatal.c.obj)
- .debug_abbrev  0x00004908       0xdc zephyr/arch/arch/posix/core/libarch__posix__core.a(irq.c.obj)
- .debug_abbrev  0x000049e4      0x260 zephyr/arch/arch/posix/core/libarch__posix__core.a(swap.c.obj)
- .debug_abbrev  0x00004c44      0x2eb zephyr/arch/arch/posix/core/libarch__posix__core.a(thread.c.obj)
- .debug_abbrev  0x00004f2f      0x134 zephyr/arch/arch/posix/core/libarch__posix__core.a(posix_core_nsi.c.obj)
- .debug_abbrev  0x00005063      0x155 zephyr/soc/soc/native/libsoc__native__inf_clock.a(soc.c.obj)
- .debug_abbrev  0x000051b8       0xb6 zephyr/soc/soc/native/libsoc__native__inf_clock.a(native_tasks.c.obj)
- .debug_abbrev  0x0000526e       0xf1 zephyr/boards/native/native_sim/libboards__native__native_sim.a(cmdline.c.obj)
- .debug_abbrev  0x0000535f       0xc6 zephyr/boards/native/native_sim/libboards__native__native_sim.a(nsi_if.c.obj)
- .debug_abbrev  0x00005425      0x3ec zephyr/boards/native/native_sim/libboards__native__native_sim.a(irq_handler.c.obj)
- .debug_abbrev  0x00005811      0x16d zephyr/boards/native/native_sim/libboards__native__native_sim.a(posix_arch_if.c.obj)
- .debug_abbrev  0x0000597e      0x2b7 zephyr/subsys/random/libsubsys__random.a(random_timer.c.obj)
- .debug_abbrev  0x00005c35      0x750 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest.c.obj)
- .debug_abbrev  0x00006385      0x3d0 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest_posix.c.obj)
- .debug_abbrev  0x00006755      0x20d zephyr/drivers/console/libdrivers__console.a(posix_arch_console.c.obj)
- .debug_abbrev  0x00006962      0x318 zephyr/drivers/timer/libdrivers__timer.a(native_sim_timer.c.obj)
- .debug_abbrev  0x00006c7a      0x1db zephyr/kernel/libkernel.a(device.c.obj)
- .debug_abbrev  0x00006e55      0x435 zephyr/kernel/libkernel.a(fatal.c.obj)
- .debug_abbrev  0x0000728a      0x66d zephyr/kernel/libkernel.a(init.c.obj)
- .debug_abbrev  0x000078f7      0x2b8 zephyr/kernel/libkernel.a(idle.c.obj)
- .debug_abbrev  0x00007baf      0x55b zephyr/kernel/libkernel.a(thread.c.obj)
- .debug_abbrev  0x0000810a      0x67f zephyr/kernel/libkernel.a(sched.c.obj)
- .debug_abbrev  0x00008789      0x44a zephyr/kernel/libkernel.a(timeslicing.c.obj)
- .debug_abbrev  0x00008bd3      0x1e5 zephyr/kernel/libkernel.a(spinlock_validate.c.obj)
- .debug_abbrev  0x00008db8      0x525 zephyr/kernel/libkernel.a(timeout.c.obj)
- .debug_abbrev  0x000092dd       0x80 zephyr/kernel/libkernel.a(banner.c.obj)
+ .debug_abbrev  0x0000072a      0x372 app/libapp.a(test_error_paths.c.obj)
+ .debug_abbrev  0x00000a9c      0x3f5 app/libapp.a(temp_alarm.c.obj)
+ .debug_abbrev  0x00000e91      0x4fa zephyr/libzephyr.a(heap.c.obj)
+ .debug_abbrev  0x0000138b      0x4f3 zephyr/libzephyr.a(cbprintf_packaged.c.obj)
+ .debug_abbrev  0x0000187e      0x4aa zephyr/libzephyr.a(clock.c.obj)
+ .debug_abbrev  0x00001d28      0x2f5 zephyr/libzephyr.a(printk.c.obj)
+ .debug_abbrev  0x0000201d      0x28d zephyr/libzephyr.a(thread_entry.c.obj)
+ .debug_abbrev  0x000022aa      0x400 zephyr/libzephyr.a(cbprintf_complete.c.obj)
+ .debug_abbrev  0x000026aa      0x13d zephyr/libzephyr.a(assert.c.obj)
+ .debug_abbrev  0x000027e7      0x1e5 zephyr/libzephyr.a(getopt.c.obj)
+ .debug_abbrev  0x000029cc       0x39 zephyr/libzephyr.a(configs.c.obj)
+ .debug_abbrev  0x00002a05      0x8a2 zephyr/libzephyr.a(log_core.c.obj)
+ .debug_abbrev  0x000032a7      0x678 zephyr/libzephyr.a(log_mgmt.c.obj)
+ .debug_abbrev  0x0000391f      0x588 zephyr/libzephyr.a(log_msg.c.obj)
+ .debug_abbrev  0x00003ea7      0x5d4 zephyr/libzephyr.a(log_output.c.obj)
+ .debug_abbrev  0x0000447b      0x342 zephyr/libzephyr.a(log_backend_native_posix.c.obj)
+ .debug_abbrev  0x000047bd       0x5e zephyr/libzephyr.a(tracing_none.c.obj)
+ .debug_abbrev  0x0000481b       0xd3 zephyr/arch/arch/posix/core/libarch__posix__core.a(cpuhalt.c.obj)
+ .debug_abbrev  0x000048ee       0x94 zephyr/arch/arch/posix/core/libarch__posix__core.a(fatal.c.obj)
+ .debug_abbrev  0x00004982       0xdc zephyr/arch/arch/posix/core/libarch__posix__core.a(irq.c.obj)
+ .debug_abbrev  0x00004a5e      0x260 zephyr/arch/arch/posix/core/libarch__posix__core.a(swap.c.obj)
+ .debug_abbrev  0x00004cbe      0x2eb zephyr/arch/arch/posix/core/libarch__posix__core.a(thread.c.obj)
+ .debug_abbrev  0x00004fa9      0x134 zephyr/arch/arch/posix/core/libarch__posix__core.a(posix_core_nsi.c.obj)
+ .debug_abbrev  0x000050dd      0x155 zephyr/soc/soc/native/libsoc__native__inf_clock.a(soc.c.obj)
+ .debug_abbrev  0x00005232       0xb6 zephyr/soc/soc/native/libsoc__native__inf_clock.a(native_tasks.c.obj)
+ .debug_abbrev  0x000052e8       0xf1 zephyr/boards/native/native_sim/libboards__native__native_sim.a(cmdline.c.obj)
+ .debug_abbrev  0x000053d9       0xc6 zephyr/boards/native/native_sim/libboards__native__native_sim.a(nsi_if.c.obj)
+ .debug_abbrev  0x0000549f      0x3ec zephyr/boards/native/native_sim/libboards__native__native_sim.a(irq_handler.c.obj)
+ .debug_abbrev  0x0000588b      0x16d zephyr/boards/native/native_sim/libboards__native__native_sim.a(posix_arch_if.c.obj)
+ .debug_abbrev  0x000059f8      0x2b7 zephyr/subsys/random/libsubsys__random.a(random_timer.c.obj)
+ .debug_abbrev  0x00005caf      0x750 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest.c.obj)
+ .debug_abbrev  0x000063ff      0x3d0 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest_posix.c.obj)
+ .debug_abbrev  0x000067cf      0x20d zephyr/drivers/console/libdrivers__console.a(posix_arch_console.c.obj)
+ .debug_abbrev  0x000069dc      0x318 zephyr/drivers/timer/libdrivers__timer.a(native_sim_timer.c.obj)
+ .debug_abbrev  0x00006cf4      0x1db zephyr/kernel/libkernel.a(device.c.obj)
+ .debug_abbrev  0x00006ecf      0x435 zephyr/kernel/libkernel.a(fatal.c.obj)
+ .debug_abbrev  0x00007304      0x66d zephyr/kernel/libkernel.a(init.c.obj)
+ .debug_abbrev  0x00007971      0x2b8 zephyr/kernel/libkernel.a(idle.c.obj)
+ .debug_abbrev  0x00007c29      0x55b zephyr/kernel/libkernel.a(thread.c.obj)
+ .debug_abbrev  0x00008184      0x67f zephyr/kernel/libkernel.a(sched.c.obj)
+ .debug_abbrev  0x00008803      0x44a zephyr/kernel/libkernel.a(timeslicing.c.obj)
+ .debug_abbrev  0x00008c4d      0x1e5 zephyr/kernel/libkernel.a(spinlock_validate.c.obj)
+ .debug_abbrev  0x00008e32      0x525 zephyr/kernel/libkernel.a(timeout.c.obj)
+ .debug_abbrev  0x00009357       0x80 zephyr/kernel/libkernel.a(banner.c.obj)
 
-.debug_line     0x00000000    0x1aeb2
+.debug_line     0x00000000    0x1b600
  *(SORT_BY_ALIGNMENT(.debug_line))
  .debug_line    0x00000000      0x1b1 zephyr/CMakeFiles/offsets.dir/./arch/posix/core/offsets/offsets.c.obj
  .debug_line    0x000001b1      0x757 app/libapp.a(sensor_fake.c.obj)
  .debug_line    0x00000908      0xd69 app/libapp.a(test_basic.c.obj)
- .debug_line    0x00001671      0x53d app/libapp.a(test_error_paths.c.obj)
- .debug_line    0x00001bae      0x991 app/libapp.a(temp_alarm.c.obj)
- .debug_line    0x0000253f     0x1a91 zephyr/libzephyr.a(heap.c.obj)
- .debug_line    0x00003fd0     0x1180 zephyr/libzephyr.a(cbprintf_packaged.c.obj)
- .debug_line    0x00005150      0xebf zephyr/libzephyr.a(clock.c.obj)
- .debug_line    0x0000600f      0x475 zephyr/libzephyr.a(printk.c.obj)
- .debug_line    0x00006484      0x565 zephyr/libzephyr.a(thread_entry.c.obj)
- .debug_line    0x000069e9      0xc8a zephyr/libzephyr.a(cbprintf_complete.c.obj)
- .debug_line    0x00007673      0x2c3 zephyr/libzephyr.a(assert.c.obj)
- .debug_line    0x00007936      0x464 zephyr/libzephyr.a(getopt.c.obj)
- .debug_line    0x00007d9a      0x214 zephyr/libzephyr.a(configs.c.obj)
- .debug_line    0x00007fae     0x131a zephyr/libzephyr.a(log_core.c.obj)
- .debug_line    0x000092c8      0xecc zephyr/libzephyr.a(log_mgmt.c.obj)
- .debug_line    0x0000a194      0xa3a zephyr/libzephyr.a(log_msg.c.obj)
- .debug_line    0x0000abce      0xbe3 zephyr/libzephyr.a(log_output.c.obj)
- .debug_line    0x0000b7b1      0x4ba zephyr/libzephyr.a(log_backend_native_posix.c.obj)
- .debug_line    0x0000bc6b       0xea zephyr/libzephyr.a(tracing_none.c.obj)
- .debug_line    0x0000bd55      0x149 zephyr/arch/arch/posix/core/libarch__posix__core.a(cpuhalt.c.obj)
- .debug_line    0x0000be9e      0x133 zephyr/arch/arch/posix/core/libarch__posix__core.a(fatal.c.obj)
- .debug_line    0x0000bfd1      0x14d zephyr/arch/arch/posix/core/libarch__posix__core.a(irq.c.obj)
- .debug_line    0x0000c11e      0x4ec zephyr/arch/arch/posix/core/libarch__posix__core.a(swap.c.obj)
- .debug_line    0x0000c60a      0x695 zephyr/arch/arch/posix/core/libarch__posix__core.a(thread.c.obj)
- .debug_line    0x0000cc9f      0x226 zephyr/arch/arch/posix/core/libarch__posix__core.a(posix_core_nsi.c.obj)
- .debug_line    0x0000cec5      0x48f zephyr/soc/soc/native/libsoc__native__inf_clock.a(soc.c.obj)
- .debug_line    0x0000d354       0xe7 zephyr/soc/soc/native/libsoc__native__inf_clock.a(native_tasks.c.obj)
- .debug_line    0x0000d43b      0x167 zephyr/boards/native/native_sim/libboards__native__native_sim.a(cmdline.c.obj)
- .debug_line    0x0000d5a2      0x188 zephyr/boards/native/native_sim/libboards__native__native_sim.a(nsi_if.c.obj)
- .debug_line    0x0000d72a      0x94d zephyr/boards/native/native_sim/libboards__native__native_sim.a(irq_handler.c.obj)
- .debug_line    0x0000e077      0x2c2 zephyr/boards/native/native_sim/libboards__native__native_sim.a(posix_arch_if.c.obj)
- .debug_line    0x0000e339      0x4eb zephyr/subsys/random/libsubsys__random.a(random_timer.c.obj)
- .debug_line    0x0000e824     0x1920 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest.c.obj)
- .debug_line    0x00010144      0x908 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest_posix.c.obj)
- .debug_line    0x00010a4c      0x329 zephyr/drivers/console/libdrivers__console.a(posix_arch_console.c.obj)
- .debug_line    0x00010d75      0x692 zephyr/drivers/timer/libdrivers__timer.a(native_sim_timer.c.obj)
- .debug_line    0x00011407      0x4f6 zephyr/kernel/libkernel.a(device.c.obj)
- .debug_line    0x000118fd      0x828 zephyr/kernel/libkernel.a(fatal.c.obj)
- .debug_line    0x00012125      0xccf zephyr/kernel/libkernel.a(init.c.obj)
- .debug_line    0x00012df4      0x545 zephyr/kernel/libkernel.a(idle.c.obj)
- .debug_line    0x00013339      0xd44 zephyr/kernel/libkernel.a(thread.c.obj)
- .debug_line    0x0001407d     0x4b31 zephyr/kernel/libkernel.a(sched.c.obj)
- .debug_line    0x00018bae      0x853 zephyr/kernel/libkernel.a(timeslicing.c.obj)
- .debug_line    0x00019401      0x4e8 zephyr/kernel/libkernel.a(spinlock_validate.c.obj)
- .debug_line    0x000198e9     0x14ab zephyr/kernel/libkernel.a(timeout.c.obj)
- .debug_line    0x0001ad94      0x11e zephyr/kernel/libkernel.a(banner.c.obj)
+ .debug_line    0x00001671      0xc8b app/libapp.a(test_error_paths.c.obj)
+ .debug_line    0x000022fc      0x991 app/libapp.a(temp_alarm.c.obj)
+ .debug_line    0x00002c8d     0x1a91 zephyr/libzephyr.a(heap.c.obj)
+ .debug_line    0x0000471e     0x1180 zephyr/libzephyr.a(cbprintf_packaged.c.obj)
+ .debug_line    0x0000589e      0xebf zephyr/libzephyr.a(clock.c.obj)
+ .debug_line    0x0000675d      0x475 zephyr/libzephyr.a(printk.c.obj)
+ .debug_line    0x00006bd2      0x565 zephyr/libzephyr.a(thread_entry.c.obj)
+ .debug_line    0x00007137      0xc8a zephyr/libzephyr.a(cbprintf_complete.c.obj)
+ .debug_line    0x00007dc1      0x2c3 zephyr/libzephyr.a(assert.c.obj)
+ .debug_line    0x00008084      0x464 zephyr/libzephyr.a(getopt.c.obj)
+ .debug_line    0x000084e8      0x214 zephyr/libzephyr.a(configs.c.obj)
+ .debug_line    0x000086fc     0x131a zephyr/libzephyr.a(log_core.c.obj)
+ .debug_line    0x00009a16      0xecc zephyr/libzephyr.a(log_mgmt.c.obj)
+ .debug_line    0x0000a8e2      0xa3a zephyr/libzephyr.a(log_msg.c.obj)
+ .debug_line    0x0000b31c      0xbe3 zephyr/libzephyr.a(log_output.c.obj)
+ .debug_line    0x0000beff      0x4ba zephyr/libzephyr.a(log_backend_native_posix.c.obj)
+ .debug_line    0x0000c3b9       0xea zephyr/libzephyr.a(tracing_none.c.obj)
+ .debug_line    0x0000c4a3      0x149 zephyr/arch/arch/posix/core/libarch__posix__core.a(cpuhalt.c.obj)
+ .debug_line    0x0000c5ec      0x133 zephyr/arch/arch/posix/core/libarch__posix__core.a(fatal.c.obj)
+ .debug_line    0x0000c71f      0x14d zephyr/arch/arch/posix/core/libarch__posix__core.a(irq.c.obj)
+ .debug_line    0x0000c86c      0x4ec zephyr/arch/arch/posix/core/libarch__posix__core.a(swap.c.obj)
+ .debug_line    0x0000cd58      0x695 zephyr/arch/arch/posix/core/libarch__posix__core.a(thread.c.obj)
+ .debug_line    0x0000d3ed      0x226 zephyr/arch/arch/posix/core/libarch__posix__core.a(posix_core_nsi.c.obj)
+ .debug_line    0x0000d613      0x48f zephyr/soc/soc/native/libsoc__native__inf_clock.a(soc.c.obj)
+ .debug_line    0x0000daa2       0xe7 zephyr/soc/soc/native/libsoc__native__inf_clock.a(native_tasks.c.obj)
+ .debug_line    0x0000db89      0x167 zephyr/boards/native/native_sim/libboards__native__native_sim.a(cmdline.c.obj)
+ .debug_line    0x0000dcf0      0x188 zephyr/boards/native/native_sim/libboards__native__native_sim.a(nsi_if.c.obj)
+ .debug_line    0x0000de78      0x94d zephyr/boards/native/native_sim/libboards__native__native_sim.a(irq_handler.c.obj)
+ .debug_line    0x0000e7c5      0x2c2 zephyr/boards/native/native_sim/libboards__native__native_sim.a(posix_arch_if.c.obj)
+ .debug_line    0x0000ea87      0x4eb zephyr/subsys/random/libsubsys__random.a(random_timer.c.obj)
+ .debug_line    0x0000ef72     0x1920 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest.c.obj)
+ .debug_line    0x00010892      0x908 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest_posix.c.obj)
+ .debug_line    0x0001119a      0x329 zephyr/drivers/console/libdrivers__console.a(posix_arch_console.c.obj)
+ .debug_line    0x000114c3      0x692 zephyr/drivers/timer/libdrivers__timer.a(native_sim_timer.c.obj)
+ .debug_line    0x00011b55      0x4f6 zephyr/kernel/libkernel.a(device.c.obj)
+ .debug_line    0x0001204b      0x828 zephyr/kernel/libkernel.a(fatal.c.obj)
+ .debug_line    0x00012873      0xccf zephyr/kernel/libkernel.a(init.c.obj)
+ .debug_line    0x00013542      0x545 zephyr/kernel/libkernel.a(idle.c.obj)
+ .debug_line    0x00013a87      0xd44 zephyr/kernel/libkernel.a(thread.c.obj)
+ .debug_line    0x000147cb     0x4b31 zephyr/kernel/libkernel.a(sched.c.obj)
+ .debug_line    0x000192fc      0x853 zephyr/kernel/libkernel.a(timeslicing.c.obj)
+ .debug_line    0x00019b4f      0x4e8 zephyr/kernel/libkernel.a(spinlock_validate.c.obj)
+ .debug_line    0x0001a037     0x14ab zephyr/kernel/libkernel.a(timeout.c.obj)
+ .debug_line    0x0001b4e2      0x11e zephyr/kernel/libkernel.a(banner.c.obj)
 
-.debug_frame    0x00000000     0x35cc
+.debug_frame    0x00000000     0x3690
  *(SORT_BY_ALIGNMENT(.debug_frame))
  .debug_frame   0x00000000       0x24 zephyr/CMakeFiles/offsets.dir/./arch/posix/core/offsets/offsets.c.obj
  .debug_frame   0x00000024      0x124 app/libapp.a(sensor_fake.c.obj)
  .debug_frame   0x00000148      0x14c app/libapp.a(test_basic.c.obj)
- .debug_frame   0x00000294       0xcc app/libapp.a(test_error_paths.c.obj)
- .debug_frame   0x00000360       0xe0 app/libapp.a(temp_alarm.c.obj)
- .debug_frame   0x00000440      0x368 zephyr/libzephyr.a(heap.c.obj)
- .debug_frame   0x000007a8      0x114 zephyr/libzephyr.a(cbprintf_packaged.c.obj)
- .debug_frame   0x000008bc      0x180 zephyr/libzephyr.a(clock.c.obj)
- .debug_frame   0x00000a3c      0x118 zephyr/libzephyr.a(printk.c.obj)
- .debug_frame   0x00000b54       0x2c zephyr/libzephyr.a(thread_entry.c.obj)
- .debug_frame   0x00000b80       0x98 zephyr/libzephyr.a(cbprintf_complete.c.obj)
- .debug_frame   0x00000c18       0x54 zephyr/libzephyr.a(assert.c.obj)
- .debug_frame   0x00000c6c       0x60 zephyr/libzephyr.a(getopt.c.obj)
- .debug_frame   0x00000ccc       0x24 zephyr/libzephyr.a(configs.c.obj)
- .debug_frame   0x00000cf0      0x3ec zephyr/libzephyr.a(log_core.c.obj)
- .debug_frame   0x000010dc      0x2ac zephyr/libzephyr.a(log_mgmt.c.obj)
- .debug_frame   0x00001388      0x1b0 zephyr/libzephyr.a(log_msg.c.obj)
- .debug_frame   0x00001538      0x1b0 zephyr/libzephyr.a(log_output.c.obj)
- .debug_frame   0x000016e8       0xac zephyr/libzephyr.a(log_backend_native_posix.c.obj)
- .debug_frame   0x00001794       0x64 zephyr/libzephyr.a(tracing_none.c.obj)
- .debug_frame   0x000017f8       0x44 zephyr/arch/arch/posix/core/libarch__posix__core.a(cpuhalt.c.obj)
- .debug_frame   0x0000183c       0x2c zephyr/arch/arch/posix/core/libarch__posix__core.a(fatal.c.obj)
- .debug_frame   0x00001868       0x44 zephyr/arch/arch/posix/core/libarch__posix__core.a(irq.c.obj)
- .debug_frame   0x000018ac       0x54 zephyr/arch/arch/posix/core/libarch__posix__core.a(swap.c.obj)
- .debug_frame   0x00001900       0xb8 zephyr/arch/arch/posix/core/libarch__posix__core.a(thread.c.obj)
- .debug_frame   0x000019b8      0x114 zephyr/arch/arch/posix/core/libarch__posix__core.a(posix_core_nsi.c.obj)
- .debug_frame   0x00001acc      0x100 zephyr/soc/soc/native/libsoc__native__inf_clock.a(soc.c.obj)
- .debug_frame   0x00001bcc       0x3c zephyr/soc/soc/native/libsoc__native__inf_clock.a(native_tasks.c.obj)
- .debug_frame   0x00001c08       0x44 zephyr/boards/native/native_sim/libboards__native__native_sim.a(cmdline.c.obj)
- .debug_frame   0x00001c4c       0xa4 zephyr/boards/native/native_sim/libboards__native__native_sim.a(nsi_if.c.obj)
- .debug_frame   0x00001cf0      0x17c zephyr/boards/native/native_sim/libboards__native__native_sim.a(irq_handler.c.obj)
- .debug_frame   0x00001e6c       0xdc zephyr/boards/native/native_sim/libboards__native__native_sim.a(posix_arch_if.c.obj)
- .debug_frame   0x00001f48       0x40 zephyr/subsys/random/libsubsys__random.a(random_timer.c.obj)
- .debug_frame   0x00001f88      0x314 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest.c.obj)
- .debug_frame   0x0000229c      0x1c0 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest_posix.c.obj)
- .debug_frame   0x0000245c       0x78 zephyr/drivers/console/libdrivers__console.a(posix_arch_console.c.obj)
- .debug_frame   0x000024d4      0x100 zephyr/drivers/timer/libdrivers__timer.a(native_sim_timer.c.obj)
- .debug_frame   0x000025d4       0xdc zephyr/kernel/libkernel.a(device.c.obj)
- .debug_frame   0x000026b0       0xa8 zephyr/kernel/libkernel.a(fatal.c.obj)
- .debug_frame   0x00002758       0xdc zephyr/kernel/libkernel.a(init.c.obj)
- .debug_frame   0x00002834       0x4c zephyr/kernel/libkernel.a(idle.c.obj)
- .debug_frame   0x00002880      0x1f8 zephyr/kernel/libkernel.a(thread.c.obj)
- .debug_frame   0x00002a78      0x6fc zephyr/kernel/libkernel.a(sched.c.obj)
- .debug_frame   0x00003174       0xc8 zephyr/kernel/libkernel.a(timeslicing.c.obj)
- .debug_frame   0x0000323c       0x74 zephyr/kernel/libkernel.a(spinlock_validate.c.obj)
- .debug_frame   0x000032b0      0x2e8 zephyr/kernel/libkernel.a(timeout.c.obj)
- .debug_frame   0x00003598       0x34 zephyr/kernel/libkernel.a(banner.c.obj)
+ .debug_frame   0x00000294      0x190 app/libapp.a(test_error_paths.c.obj)
+ .debug_frame   0x00000424       0xe0 app/libapp.a(temp_alarm.c.obj)
+ .debug_frame   0x00000504      0x368 zephyr/libzephyr.a(heap.c.obj)
+ .debug_frame   0x0000086c      0x114 zephyr/libzephyr.a(cbprintf_packaged.c.obj)
+ .debug_frame   0x00000980      0x180 zephyr/libzephyr.a(clock.c.obj)
+ .debug_frame   0x00000b00      0x118 zephyr/libzephyr.a(printk.c.obj)
+ .debug_frame   0x00000c18       0x2c zephyr/libzephyr.a(thread_entry.c.obj)
+ .debug_frame   0x00000c44       0x98 zephyr/libzephyr.a(cbprintf_complete.c.obj)
+ .debug_frame   0x00000cdc       0x54 zephyr/libzephyr.a(assert.c.obj)
+ .debug_frame   0x00000d30       0x60 zephyr/libzephyr.a(getopt.c.obj)
+ .debug_frame   0x00000d90       0x24 zephyr/libzephyr.a(configs.c.obj)
+ .debug_frame   0x00000db4      0x3ec zephyr/libzephyr.a(log_core.c.obj)
+ .debug_frame   0x000011a0      0x2ac zephyr/libzephyr.a(log_mgmt.c.obj)
+ .debug_frame   0x0000144c      0x1b0 zephyr/libzephyr.a(log_msg.c.obj)
+ .debug_frame   0x000015fc      0x1b0 zephyr/libzephyr.a(log_output.c.obj)
+ .debug_frame   0x000017ac       0xac zephyr/libzephyr.a(log_backend_native_posix.c.obj)
+ .debug_frame   0x00001858       0x64 zephyr/libzephyr.a(tracing_none.c.obj)
+ .debug_frame   0x000018bc       0x44 zephyr/arch/arch/posix/core/libarch__posix__core.a(cpuhalt.c.obj)
+ .debug_frame   0x00001900       0x2c zephyr/arch/arch/posix/core/libarch__posix__core.a(fatal.c.obj)
+ .debug_frame   0x0000192c       0x44 zephyr/arch/arch/posix/core/libarch__posix__core.a(irq.c.obj)
+ .debug_frame   0x00001970       0x54 zephyr/arch/arch/posix/core/libarch__posix__core.a(swap.c.obj)
+ .debug_frame   0x000019c4       0xb8 zephyr/arch/arch/posix/core/libarch__posix__core.a(thread.c.obj)
+ .debug_frame   0x00001a7c      0x114 zephyr/arch/arch/posix/core/libarch__posix__core.a(posix_core_nsi.c.obj)
+ .debug_frame   0x00001b90      0x100 zephyr/soc/soc/native/libsoc__native__inf_clock.a(soc.c.obj)
+ .debug_frame   0x00001c90       0x3c zephyr/soc/soc/native/libsoc__native__inf_clock.a(native_tasks.c.obj)
+ .debug_frame   0x00001ccc       0x44 zephyr/boards/native/native_sim/libboards__native__native_sim.a(cmdline.c.obj)
+ .debug_frame   0x00001d10       0xa4 zephyr/boards/native/native_sim/libboards__native__native_sim.a(nsi_if.c.obj)
+ .debug_frame   0x00001db4      0x17c zephyr/boards/native/native_sim/libboards__native__native_sim.a(irq_handler.c.obj)
+ .debug_frame   0x00001f30       0xdc zephyr/boards/native/native_sim/libboards__native__native_sim.a(posix_arch_if.c.obj)
+ .debug_frame   0x0000200c       0x40 zephyr/subsys/random/libsubsys__random.a(random_timer.c.obj)
+ .debug_frame   0x0000204c      0x314 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest.c.obj)
+ .debug_frame   0x00002360      0x1c0 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest_posix.c.obj)
+ .debug_frame   0x00002520       0x78 zephyr/drivers/console/libdrivers__console.a(posix_arch_console.c.obj)
+ .debug_frame   0x00002598      0x100 zephyr/drivers/timer/libdrivers__timer.a(native_sim_timer.c.obj)
+ .debug_frame   0x00002698       0xdc zephyr/kernel/libkernel.a(device.c.obj)
+ .debug_frame   0x00002774       0xa8 zephyr/kernel/libkernel.a(fatal.c.obj)
+ .debug_frame   0x0000281c       0xdc zephyr/kernel/libkernel.a(init.c.obj)
+ .debug_frame   0x000028f8       0x4c zephyr/kernel/libkernel.a(idle.c.obj)
+ .debug_frame   0x00002944      0x1f8 zephyr/kernel/libkernel.a(thread.c.obj)
+ .debug_frame   0x00002b3c      0x6fc zephyr/kernel/libkernel.a(sched.c.obj)
+ .debug_frame   0x00003238       0xc8 zephyr/kernel/libkernel.a(timeslicing.c.obj)
+ .debug_frame   0x00003300       0x74 zephyr/kernel/libkernel.a(spinlock_validate.c.obj)
+ .debug_frame   0x00003374      0x2e8 zephyr/kernel/libkernel.a(timeout.c.obj)
+ .debug_frame   0x0000365c       0x34 zephyr/kernel/libkernel.a(banner.c.obj)
 
-.debug_str      0x00000000    0x1aca6
+.debug_str      0x00000000    0x1b683
  *(SORT_BY_ALIGNMENT(.debug_str))
  .debug_str     0x00000000      0x418 zephyr/CMakeFiles/offsets.dir/./arch/posix/core/offsets/offsets.c.obj
  .debug_str     0x00000418     0x1642 app/libapp.a(sensor_fake.c.obj)
  .debug_str     0x00001a5a     0x1658 app/libapp.a(test_basic.c.obj)
- .debug_str     0x000030b2      0xe21 app/libapp.a(test_error_paths.c.obj)
- .debug_str     0x00003ed3     0x166a app/libapp.a(temp_alarm.c.obj)
- .debug_str     0x0000553d      0xc26 zephyr/libzephyr.a(heap.c.obj)
- .debug_str     0x00006163      0x9fc zephyr/libzephyr.a(cbprintf_packaged.c.obj)
- .debug_str     0x00006b5f      0xa24 zephyr/libzephyr.a(clock.c.obj)
- .debug_str     0x00007583      0x5df zephyr/libzephyr.a(printk.c.obj)
- .debug_str     0x00007b62      0x649 zephyr/libzephyr.a(thread_entry.c.obj)
- .debug_str     0x000081ab      0x785 zephyr/libzephyr.a(cbprintf_complete.c.obj)
- .debug_str     0x00008930      0x40d zephyr/libzephyr.a(assert.c.obj)
- .debug_str     0x00008d3d      0x6e4 zephyr/libzephyr.a(getopt.c.obj)
- .debug_str     0x00009421      0x2e6 zephyr/libzephyr.a(configs.c.obj)
- .debug_str     0x00009707     0x15b6 zephyr/libzephyr.a(log_core.c.obj)
- .debug_str     0x0000acbd      0xfda zephyr/libzephyr.a(log_mgmt.c.obj)
- .debug_str     0x0000bc97      0xa3f zephyr/libzephyr.a(log_msg.c.obj)
- .debug_str     0x0000c6d6      0xd2a zephyr/libzephyr.a(log_output.c.obj)
- .debug_str     0x0000d400      0x89b zephyr/libzephyr.a(log_backend_native_posix.c.obj)
- .debug_str     0x0000dc9b      0x372 zephyr/libzephyr.a(tracing_none.c.obj)
- .debug_str     0x0000e00d      0x362 zephyr/arch/arch/posix/core/libarch__posix__core.a(cpuhalt.c.obj)
- .debug_str     0x0000e36f      0x335 zephyr/arch/arch/posix/core/libarch__posix__core.a(fatal.c.obj)
- .debug_str     0x0000e6a4      0x36d zephyr/arch/arch/posix/core/libarch__posix__core.a(irq.c.obj)
- .debug_str     0x0000ea11      0x693 zephyr/arch/arch/posix/core/libarch__posix__core.a(swap.c.obj)
- .debug_str     0x0000f0a4      0x79e zephyr/arch/arch/posix/core/libarch__posix__core.a(thread.c.obj)
- .debug_str     0x0000f842      0x3f4 zephyr/arch/arch/posix/core/libarch__posix__core.a(posix_core_nsi.c.obj)
- .debug_str     0x0000fc36      0x614 zephyr/soc/soc/native/libsoc__native__inf_clock.a(soc.c.obj)
- .debug_str     0x0001024a      0x354 zephyr/soc/soc/native/libsoc__native__inf_clock.a(native_tasks.c.obj)
- .debug_str     0x0001059e      0x3ce zephyr/boards/native/native_sim/libboards__native__native_sim.a(cmdline.c.obj)
- .debug_str     0x0001096c      0x3c4 zephyr/boards/native/native_sim/libboards__native__native_sim.a(nsi_if.c.obj)
- .debug_str     0x00010d30      0xb1b zephyr/boards/native/native_sim/libboards__native__native_sim.a(irq_handler.c.obj)
- .debug_str     0x0001184b      0x496 zephyr/boards/native/native_sim/libboards__native__native_sim.a(posix_arch_if.c.obj)
- .debug_str     0x00011ce1      0x69f zephyr/subsys/random/libsubsys__random.a(random_timer.c.obj)
- .debug_str     0x00012380     0x1454 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest.c.obj)
- .debug_str     0x000137d4      0x866 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest_posix.c.obj)
- .debug_str     0x0001403a      0x5d3 zephyr/drivers/console/libdrivers__console.a(posix_arch_console.c.obj)
- .debug_str     0x0001460d      0x5e2 zephyr/drivers/timer/libdrivers__timer.a(native_sim_timer.c.obj)
- .debug_str     0x00014bef      0x48e zephyr/kernel/libkernel.a(device.c.obj)
- .debug_str     0x0001507d      0xa5b zephyr/kernel/libkernel.a(fatal.c.obj)
- .debug_str     0x00015ad8      0xe6e zephyr/kernel/libkernel.a(init.c.obj)
- .debug_str     0x00016946      0x6c4 zephyr/kernel/libkernel.a(idle.c.obj)
- .debug_str     0x0001700a      0xb75 zephyr/kernel/libkernel.a(thread.c.obj)
- .debug_str     0x00017b7f     0x13ef zephyr/kernel/libkernel.a(sched.c.obj)
- .debug_str     0x00018f6e      0xa5d zephyr/kernel/libkernel.a(timeslicing.c.obj)
- .debug_str     0x000199cb      0x5ec zephyr/kernel/libkernel.a(spinlock_validate.c.obj)
- .debug_str     0x00019fb7      0x9e2 zephyr/kernel/libkernel.a(timeout.c.obj)
- .debug_str     0x0001a999      0x30d zephyr/kernel/libkernel.a(banner.c.obj)
+ .debug_str     0x000030b2     0x17fe app/libapp.a(test_error_paths.c.obj)
+ .debug_str     0x000048b0     0x166a app/libapp.a(temp_alarm.c.obj)
+ .debug_str     0x00005f1a      0xc26 zephyr/libzephyr.a(heap.c.obj)
+ .debug_str     0x00006b40      0x9fc zephyr/libzephyr.a(cbprintf_packaged.c.obj)
+ .debug_str     0x0000753c      0xa24 zephyr/libzephyr.a(clock.c.obj)
+ .debug_str     0x00007f60      0x5df zephyr/libzephyr.a(printk.c.obj)
+ .debug_str     0x0000853f      0x649 zephyr/libzephyr.a(thread_entry.c.obj)
+ .debug_str     0x00008b88      0x785 zephyr/libzephyr.a(cbprintf_complete.c.obj)
+ .debug_str     0x0000930d      0x40d zephyr/libzephyr.a(assert.c.obj)
+ .debug_str     0x0000971a      0x6e4 zephyr/libzephyr.a(getopt.c.obj)
+ .debug_str     0x00009dfe      0x2e6 zephyr/libzephyr.a(configs.c.obj)
+ .debug_str     0x0000a0e4     0x15b6 zephyr/libzephyr.a(log_core.c.obj)
+ .debug_str     0x0000b69a      0xfda zephyr/libzephyr.a(log_mgmt.c.obj)
+ .debug_str     0x0000c674      0xa3f zephyr/libzephyr.a(log_msg.c.obj)
+ .debug_str     0x0000d0b3      0xd2a zephyr/libzephyr.a(log_output.c.obj)
+ .debug_str     0x0000dddd      0x89b zephyr/libzephyr.a(log_backend_native_posix.c.obj)
+ .debug_str     0x0000e678      0x372 zephyr/libzephyr.a(tracing_none.c.obj)
+ .debug_str     0x0000e9ea      0x362 zephyr/arch/arch/posix/core/libarch__posix__core.a(cpuhalt.c.obj)
+ .debug_str     0x0000ed4c      0x335 zephyr/arch/arch/posix/core/libarch__posix__core.a(fatal.c.obj)
+ .debug_str     0x0000f081      0x36d zephyr/arch/arch/posix/core/libarch__posix__core.a(irq.c.obj)
+ .debug_str     0x0000f3ee      0x693 zephyr/arch/arch/posix/core/libarch__posix__core.a(swap.c.obj)
+ .debug_str     0x0000fa81      0x79e zephyr/arch/arch/posix/core/libarch__posix__core.a(thread.c.obj)
+ .debug_str     0x0001021f      0x3f4 zephyr/arch/arch/posix/core/libarch__posix__core.a(posix_core_nsi.c.obj)
+ .debug_str     0x00010613      0x614 zephyr/soc/soc/native/libsoc__native__inf_clock.a(soc.c.obj)
+ .debug_str     0x00010c27      0x354 zephyr/soc/soc/native/libsoc__native__inf_clock.a(native_tasks.c.obj)
+ .debug_str     0x00010f7b      0x3ce zephyr/boards/native/native_sim/libboards__native__native_sim.a(cmdline.c.obj)
+ .debug_str     0x00011349      0x3c4 zephyr/boards/native/native_sim/libboards__native__native_sim.a(nsi_if.c.obj)
+ .debug_str     0x0001170d      0xb1b zephyr/boards/native/native_sim/libboards__native__native_sim.a(irq_handler.c.obj)
+ .debug_str     0x00012228      0x496 zephyr/boards/native/native_sim/libboards__native__native_sim.a(posix_arch_if.c.obj)
+ .debug_str     0x000126be      0x69f zephyr/subsys/random/libsubsys__random.a(random_timer.c.obj)
+ .debug_str     0x00012d5d     0x1454 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest.c.obj)
+ .debug_str     0x000141b1      0x866 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest_posix.c.obj)
+ .debug_str     0x00014a17      0x5d3 zephyr/drivers/console/libdrivers__console.a(posix_arch_console.c.obj)
+ .debug_str     0x00014fea      0x5e2 zephyr/drivers/timer/libdrivers__timer.a(native_sim_timer.c.obj)
+ .debug_str     0x000155cc      0x48e zephyr/kernel/libkernel.a(device.c.obj)
+ .debug_str     0x00015a5a      0xa5b zephyr/kernel/libkernel.a(fatal.c.obj)
+ .debug_str     0x000164b5      0xe6e zephyr/kernel/libkernel.a(init.c.obj)
+ .debug_str     0x00017323      0x6c4 zephyr/kernel/libkernel.a(idle.c.obj)
+ .debug_str     0x000179e7      0xb75 zephyr/kernel/libkernel.a(thread.c.obj)
+ .debug_str     0x0001855c     0x13ef zephyr/kernel/libkernel.a(sched.c.obj)
+ .debug_str     0x0001994b      0xa5d zephyr/kernel/libkernel.a(timeslicing.c.obj)
+ .debug_str     0x0001a3a8      0x5ec zephyr/kernel/libkernel.a(spinlock_validate.c.obj)
+ .debug_str     0x0001a994      0x9e2 zephyr/kernel/libkernel.a(timeout.c.obj)
+ .debug_str     0x0001b376      0x30d zephyr/kernel/libkernel.a(banner.c.obj)
 
-.debug_loc      0x00000000    0x158c1
+.debug_loc      0x00000000    0x15b62
  *(SORT_BY_ALIGNMENT(.debug_loc))
  .debug_loc     0x00000000       0xde app/libapp.a(sensor_fake.c.obj)
  .debug_loc     0x000000de      0x31b app/libapp.a(test_basic.c.obj)
- .debug_loc     0x000003f9       0xc9 app/libapp.a(test_error_paths.c.obj)
- .debug_loc     0x000004c2      0x3eb app/libapp.a(temp_alarm.c.obj)
- .debug_loc     0x000008ad     0x44af zephyr/libzephyr.a(heap.c.obj)
- .debug_loc     0x00004d5c     0x1f1e zephyr/libzephyr.a(cbprintf_packaged.c.obj)
- .debug_loc     0x00006c7a      0xb2d zephyr/libzephyr.a(clock.c.obj)
- .debug_loc     0x000077a7      0x2a1 zephyr/libzephyr.a(printk.c.obj)
- .debug_loc     0x00007a48       0x6d zephyr/libzephyr.a(thread_entry.c.obj)
- .debug_loc     0x00007ab5     0x173d zephyr/libzephyr.a(cbprintf_complete.c.obj)
- .debug_loc     0x000091f2       0x50 zephyr/libzephyr.a(assert.c.obj)
- .debug_loc     0x00009242       0xa1 zephyr/libzephyr.a(getopt.c.obj)
- .debug_loc     0x000092e3      0xab3 zephyr/libzephyr.a(log_core.c.obj)
- .debug_loc     0x00009d96      0x862 zephyr/libzephyr.a(log_mgmt.c.obj)
- .debug_loc     0x0000a5f8      0xcdf zephyr/libzephyr.a(log_msg.c.obj)
- .debug_loc     0x0000b2d7     0x1207 zephyr/libzephyr.a(log_output.c.obj)
- .debug_loc     0x0000c4de      0x18e zephyr/libzephyr.a(log_backend_native_posix.c.obj)
- .debug_loc     0x0000c66c       0x6b zephyr/arch/arch/posix/core/libarch__posix__core.a(swap.c.obj)
- .debug_loc     0x0000c6d7      0x216 zephyr/arch/arch/posix/core/libarch__posix__core.a(thread.c.obj)
- .debug_loc     0x0000c8ed       0x5e zephyr/arch/arch/posix/core/libarch__posix__core.a(posix_core_nsi.c.obj)
- .debug_loc     0x0000c94b       0x2c zephyr/soc/soc/native/libsoc__native__inf_clock.a(soc.c.obj)
- .debug_loc     0x0000c977       0x31 zephyr/soc/soc/native/libsoc__native__inf_clock.a(native_tasks.c.obj)
- .debug_loc     0x0000c9a8      0x1f8 zephyr/boards/native/native_sim/libboards__native__native_sim.a(irq_handler.c.obj)
- .debug_loc     0x0000cba0       0x6c zephyr/boards/native/native_sim/libboards__native__native_sim.a(posix_arch_if.c.obj)
- .debug_loc     0x0000cc0c      0x159 zephyr/subsys/random/libsubsys__random.a(random_timer.c.obj)
- .debug_loc     0x0000cd65     0x16bd zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest.c.obj)
- .debug_loc     0x0000e422      0x3ce zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest_posix.c.obj)
- .debug_loc     0x0000e7f0       0x15 zephyr/drivers/console/libdrivers__console.a(posix_arch_console.c.obj)
- .debug_loc     0x0000e805       0xa0 zephyr/drivers/timer/libdrivers__timer.a(native_sim_timer.c.obj)
- .debug_loc     0x0000e8a5       0x87 zephyr/kernel/libkernel.a(device.c.obj)
- .debug_loc     0x0000e92c      0x20f zephyr/kernel/libkernel.a(fatal.c.obj)
- .debug_loc     0x0000eb3b      0x4c0 zephyr/kernel/libkernel.a(init.c.obj)
- .debug_loc     0x0000effb      0x971 zephyr/kernel/libkernel.a(thread.c.obj)
- .debug_loc     0x0000f96c     0x498c zephyr/kernel/libkernel.a(sched.c.obj)
- .debug_loc     0x000142f8      0x288 zephyr/kernel/libkernel.a(timeslicing.c.obj)
- .debug_loc     0x00014580       0x39 zephyr/kernel/libkernel.a(spinlock_validate.c.obj)
- .debug_loc     0x000145b9     0x1308 zephyr/kernel/libkernel.a(timeout.c.obj)
+ .debug_loc     0x000003f9      0x36a app/libapp.a(test_error_paths.c.obj)
+ .debug_loc     0x00000763      0x3eb app/libapp.a(temp_alarm.c.obj)
+ .debug_loc     0x00000b4e     0x44af zephyr/libzephyr.a(heap.c.obj)
+ .debug_loc     0x00004ffd     0x1f1e zephyr/libzephyr.a(cbprintf_packaged.c.obj)
+ .debug_loc     0x00006f1b      0xb2d zephyr/libzephyr.a(clock.c.obj)
+ .debug_loc     0x00007a48      0x2a1 zephyr/libzephyr.a(printk.c.obj)
+ .debug_loc     0x00007ce9       0x6d zephyr/libzephyr.a(thread_entry.c.obj)
+ .debug_loc     0x00007d56     0x173d zephyr/libzephyr.a(cbprintf_complete.c.obj)
+ .debug_loc     0x00009493       0x50 zephyr/libzephyr.a(assert.c.obj)
+ .debug_loc     0x000094e3       0xa1 zephyr/libzephyr.a(getopt.c.obj)
+ .debug_loc     0x00009584      0xab3 zephyr/libzephyr.a(log_core.c.obj)
+ .debug_loc     0x0000a037      0x862 zephyr/libzephyr.a(log_mgmt.c.obj)
+ .debug_loc     0x0000a899      0xcdf zephyr/libzephyr.a(log_msg.c.obj)
+ .debug_loc     0x0000b578     0x1207 zephyr/libzephyr.a(log_output.c.obj)
+ .debug_loc     0x0000c77f      0x18e zephyr/libzephyr.a(log_backend_native_posix.c.obj)
+ .debug_loc     0x0000c90d       0x6b zephyr/arch/arch/posix/core/libarch__posix__core.a(swap.c.obj)
+ .debug_loc     0x0000c978      0x216 zephyr/arch/arch/posix/core/libarch__posix__core.a(thread.c.obj)
+ .debug_loc     0x0000cb8e       0x5e zephyr/arch/arch/posix/core/libarch__posix__core.a(posix_core_nsi.c.obj)
+ .debug_loc     0x0000cbec       0x2c zephyr/soc/soc/native/libsoc__native__inf_clock.a(soc.c.obj)
+ .debug_loc     0x0000cc18       0x31 zephyr/soc/soc/native/libsoc__native__inf_clock.a(native_tasks.c.obj)
+ .debug_loc     0x0000cc49      0x1f8 zephyr/boards/native/native_sim/libboards__native__native_sim.a(irq_handler.c.obj)
+ .debug_loc     0x0000ce41       0x6c zephyr/boards/native/native_sim/libboards__native__native_sim.a(posix_arch_if.c.obj)
+ .debug_loc     0x0000cead      0x159 zephyr/subsys/random/libsubsys__random.a(random_timer.c.obj)
+ .debug_loc     0x0000d006     0x16bd zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest.c.obj)
+ .debug_loc     0x0000e6c3      0x3ce zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest_posix.c.obj)
+ .debug_loc     0x0000ea91       0x15 zephyr/drivers/console/libdrivers__console.a(posix_arch_console.c.obj)
+ .debug_loc     0x0000eaa6       0xa0 zephyr/drivers/timer/libdrivers__timer.a(native_sim_timer.c.obj)
+ .debug_loc     0x0000eb46       0x87 zephyr/kernel/libkernel.a(device.c.obj)
+ .debug_loc     0x0000ebcd      0x20f zephyr/kernel/libkernel.a(fatal.c.obj)
+ .debug_loc     0x0000eddc      0x4c0 zephyr/kernel/libkernel.a(init.c.obj)
+ .debug_loc     0x0000f29c      0x971 zephyr/kernel/libkernel.a(thread.c.obj)
+ .debug_loc     0x0000fc0d     0x498c zephyr/kernel/libkernel.a(sched.c.obj)
+ .debug_loc     0x00014599      0x288 zephyr/kernel/libkernel.a(timeslicing.c.obj)
+ .debug_loc     0x00014821       0x39 zephyr/kernel/libkernel.a(spinlock_validate.c.obj)
+ .debug_loc     0x0001485a     0x1308 zephyr/kernel/libkernel.a(timeout.c.obj)
 
 .debug_macinfo
  *(SORT_BY_ALIGNMENT(.debug_macinfo))
@@ -5080,55 +5142,55 @@ noinit
 .debug_pubtypes
  *(SORT_BY_ALIGNMENT(.debug_pubtypes))
 
-.debug_ranges   0x00000000     0x4680
+.debug_ranges   0x00000000     0x4998
  *(SORT_BY_ALIGNMENT(.debug_ranges))
  .debug_ranges  0x00000000       0x10 zephyr/CMakeFiles/offsets.dir/./arch/posix/core/offsets/offsets.c.obj
  .debug_ranges  0x00000010       0x78 app/libapp.a(sensor_fake.c.obj)
  .debug_ranges  0x00000088      0x4c0 app/libapp.a(test_basic.c.obj)
- .debug_ranges  0x00000548       0x50 app/libapp.a(test_error_paths.c.obj)
- .debug_ranges  0x00000598      0x100 app/libapp.a(temp_alarm.c.obj)
- .debug_ranges  0x00000698      0x620 zephyr/libzephyr.a(heap.c.obj)
- .debug_ranges  0x00000cb8      0x270 zephyr/libzephyr.a(cbprintf_packaged.c.obj)
- .debug_ranges  0x00000f28      0x1d8 zephyr/libzephyr.a(clock.c.obj)
- .debug_ranges  0x00001100       0x78 zephyr/libzephyr.a(printk.c.obj)
- .debug_ranges  0x00001178       0x10 zephyr/libzephyr.a(thread_entry.c.obj)
- .debug_ranges  0x00001188      0x230 zephyr/libzephyr.a(cbprintf_complete.c.obj)
- .debug_ranges  0x000013b8       0x18 zephyr/libzephyr.a(assert.c.obj)
- .debug_ranges  0x000013d0       0x18 zephyr/libzephyr.a(getopt.c.obj)
- .debug_ranges  0x000013e8       0x10 zephyr/libzephyr.a(configs.c.obj)
- .debug_ranges  0x000013f8      0x2d0 zephyr/libzephyr.a(log_core.c.obj)
- .debug_ranges  0x000016c8      0x410 zephyr/libzephyr.a(log_mgmt.c.obj)
- .debug_ranges  0x00001ad8      0x110 zephyr/libzephyr.a(log_msg.c.obj)
- .debug_ranges  0x00001be8      0x188 zephyr/libzephyr.a(log_output.c.obj)
- .debug_ranges  0x00001d70       0x60 zephyr/libzephyr.a(log_backend_native_posix.c.obj)
- .debug_ranges  0x00001dd0       0x30 zephyr/libzephyr.a(tracing_none.c.obj)
- .debug_ranges  0x00001e00       0x18 zephyr/arch/arch/posix/core/libarch__posix__core.a(cpuhalt.c.obj)
- .debug_ranges  0x00001e18       0x10 zephyr/arch/arch/posix/core/libarch__posix__core.a(fatal.c.obj)
- .debug_ranges  0x00001e28       0x20 zephyr/arch/arch/posix/core/libarch__posix__core.a(irq.c.obj)
- .debug_ranges  0x00001e48       0x38 zephyr/arch/arch/posix/core/libarch__posix__core.a(swap.c.obj)
- .debug_ranges  0x00001e80       0x30 zephyr/arch/arch/posix/core/libarch__posix__core.a(thread.c.obj)
- .debug_ranges  0x00001eb0       0x48 zephyr/arch/arch/posix/core/libarch__posix__core.a(posix_core_nsi.c.obj)
- .debug_ranges  0x00001ef8       0x40 zephyr/soc/soc/native/libsoc__native__inf_clock.a(soc.c.obj)
- .debug_ranges  0x00001f38       0x10 zephyr/soc/soc/native/libsoc__native__inf_clock.a(native_tasks.c.obj)
- .debug_ranges  0x00001f48       0x20 zephyr/boards/native/native_sim/libboards__native__native_sim.a(cmdline.c.obj)
- .debug_ranges  0x00001f68       0x30 zephyr/boards/native/native_sim/libboards__native__native_sim.a(nsi_if.c.obj)
- .debug_ranges  0x00001f98       0x70 zephyr/boards/native/native_sim/libboards__native__native_sim.a(irq_handler.c.obj)
- .debug_ranges  0x00002008       0x50 zephyr/boards/native/native_sim/libboards__native__native_sim.a(posix_arch_if.c.obj)
- .debug_ranges  0x00002058       0xa8 zephyr/subsys/random/libsubsys__random.a(random_timer.c.obj)
- .debug_ranges  0x00002100      0x358 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest.c.obj)
- .debug_ranges  0x00002458       0xa0 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest_posix.c.obj)
- .debug_ranges  0x000024f8       0x20 zephyr/drivers/console/libdrivers__console.a(posix_arch_console.c.obj)
- .debug_ranges  0x00002518       0x60 zephyr/drivers/timer/libdrivers__timer.a(native_sim_timer.c.obj)
- .debug_ranges  0x00002578       0x90 zephyr/kernel/libkernel.a(device.c.obj)
- .debug_ranges  0x00002608       0xb0 zephyr/kernel/libkernel.a(fatal.c.obj)
- .debug_ranges  0x000026b8       0xe8 zephyr/kernel/libkernel.a(init.c.obj)
- .debug_ranges  0x000027a0       0x30 zephyr/kernel/libkernel.a(idle.c.obj)
- .debug_ranges  0x000027d0      0x1d0 zephyr/kernel/libkernel.a(thread.c.obj)
- .debug_ranges  0x000029a0     0x15e8 zephyr/kernel/libkernel.a(sched.c.obj)
- .debug_ranges  0x00003f88      0x120 zephyr/kernel/libkernel.a(timeslicing.c.obj)
- .debug_ranges  0x000040a8       0x20 zephyr/kernel/libkernel.a(spinlock_validate.c.obj)
- .debug_ranges  0x000040c8      0x5a8 zephyr/kernel/libkernel.a(timeout.c.obj)
- .debug_ranges  0x00004670       0x10 zephyr/kernel/libkernel.a(banner.c.obj)
+ .debug_ranges  0x00000548      0x368 app/libapp.a(test_error_paths.c.obj)
+ .debug_ranges  0x000008b0      0x100 app/libapp.a(temp_alarm.c.obj)
+ .debug_ranges  0x000009b0      0x620 zephyr/libzephyr.a(heap.c.obj)
+ .debug_ranges  0x00000fd0      0x270 zephyr/libzephyr.a(cbprintf_packaged.c.obj)
+ .debug_ranges  0x00001240      0x1d8 zephyr/libzephyr.a(clock.c.obj)
+ .debug_ranges  0x00001418       0x78 zephyr/libzephyr.a(printk.c.obj)
+ .debug_ranges  0x00001490       0x10 zephyr/libzephyr.a(thread_entry.c.obj)
+ .debug_ranges  0x000014a0      0x230 zephyr/libzephyr.a(cbprintf_complete.c.obj)
+ .debug_ranges  0x000016d0       0x18 zephyr/libzephyr.a(assert.c.obj)
+ .debug_ranges  0x000016e8       0x18 zephyr/libzephyr.a(getopt.c.obj)
+ .debug_ranges  0x00001700       0x10 zephyr/libzephyr.a(configs.c.obj)
+ .debug_ranges  0x00001710      0x2d0 zephyr/libzephyr.a(log_core.c.obj)
+ .debug_ranges  0x000019e0      0x410 zephyr/libzephyr.a(log_mgmt.c.obj)
+ .debug_ranges  0x00001df0      0x110 zephyr/libzephyr.a(log_msg.c.obj)
+ .debug_ranges  0x00001f00      0x188 zephyr/libzephyr.a(log_output.c.obj)
+ .debug_ranges  0x00002088       0x60 zephyr/libzephyr.a(log_backend_native_posix.c.obj)
+ .debug_ranges  0x000020e8       0x30 zephyr/libzephyr.a(tracing_none.c.obj)
+ .debug_ranges  0x00002118       0x18 zephyr/arch/arch/posix/core/libarch__posix__core.a(cpuhalt.c.obj)
+ .debug_ranges  0x00002130       0x10 zephyr/arch/arch/posix/core/libarch__posix__core.a(fatal.c.obj)
+ .debug_ranges  0x00002140       0x20 zephyr/arch/arch/posix/core/libarch__posix__core.a(irq.c.obj)
+ .debug_ranges  0x00002160       0x38 zephyr/arch/arch/posix/core/libarch__posix__core.a(swap.c.obj)
+ .debug_ranges  0x00002198       0x30 zephyr/arch/arch/posix/core/libarch__posix__core.a(thread.c.obj)
+ .debug_ranges  0x000021c8       0x48 zephyr/arch/arch/posix/core/libarch__posix__core.a(posix_core_nsi.c.obj)
+ .debug_ranges  0x00002210       0x40 zephyr/soc/soc/native/libsoc__native__inf_clock.a(soc.c.obj)
+ .debug_ranges  0x00002250       0x10 zephyr/soc/soc/native/libsoc__native__inf_clock.a(native_tasks.c.obj)
+ .debug_ranges  0x00002260       0x20 zephyr/boards/native/native_sim/libboards__native__native_sim.a(cmdline.c.obj)
+ .debug_ranges  0x00002280       0x30 zephyr/boards/native/native_sim/libboards__native__native_sim.a(nsi_if.c.obj)
+ .debug_ranges  0x000022b0       0x70 zephyr/boards/native/native_sim/libboards__native__native_sim.a(irq_handler.c.obj)
+ .debug_ranges  0x00002320       0x50 zephyr/boards/native/native_sim/libboards__native__native_sim.a(posix_arch_if.c.obj)
+ .debug_ranges  0x00002370       0xa8 zephyr/subsys/random/libsubsys__random.a(random_timer.c.obj)
+ .debug_ranges  0x00002418      0x358 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest.c.obj)
+ .debug_ranges  0x00002770       0xa0 zephyr/subsys/testsuite/ztest/libsubsys__testsuite__ztest.a(ztest_posix.c.obj)
+ .debug_ranges  0x00002810       0x20 zephyr/drivers/console/libdrivers__console.a(posix_arch_console.c.obj)
+ .debug_ranges  0x00002830       0x60 zephyr/drivers/timer/libdrivers__timer.a(native_sim_timer.c.obj)
+ .debug_ranges  0x00002890       0x90 zephyr/kernel/libkernel.a(device.c.obj)
+ .debug_ranges  0x00002920       0xb0 zephyr/kernel/libkernel.a(fatal.c.obj)
+ .debug_ranges  0x000029d0       0xe8 zephyr/kernel/libkernel.a(init.c.obj)
+ .debug_ranges  0x00002ab8       0x30 zephyr/kernel/libkernel.a(idle.c.obj)
+ .debug_ranges  0x00002ae8      0x1d0 zephyr/kernel/libkernel.a(thread.c.obj)
+ .debug_ranges  0x00002cb8     0x15e8 zephyr/kernel/libkernel.a(sched.c.obj)
+ .debug_ranges  0x000042a0      0x120 zephyr/kernel/libkernel.a(timeslicing.c.obj)
+ .debug_ranges  0x000043c0       0x20 zephyr/kernel/libkernel.a(spinlock_validate.c.obj)
+ .debug_ranges  0x000043e0      0x5a8 zephyr/kernel/libkernel.a(timeout.c.obj)
+ .debug_ranges  0x00004988       0x10 zephyr/kernel/libkernel.a(banner.c.obj)
 
 .debug_addr
  *(SORT_BY_ALIGNMENT(.debug_addr))
