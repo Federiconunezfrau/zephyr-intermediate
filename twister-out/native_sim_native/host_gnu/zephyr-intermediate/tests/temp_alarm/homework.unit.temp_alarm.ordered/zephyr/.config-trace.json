@@ -4958,7 +4958,7 @@
     "default",
     [
       "/home/federico/Documents/Zephyr_Intermediate_Course_IOMICO/taskworkspace/deps/zephyr/subsys/logging/Kconfig.misc",
-      41
+      40
     ]
   ],
   [
@@ -5308,6 +5308,14 @@
     null
   ],
   [
+    "CONFIG_ZTEST_WARN_NO_OPTIMIZATIONS",
+    "y",
+    "bool",
+    null,
+    "unset",
+    null
+  ],
+  [
     "CONFIG_ZTEST_RULE_1CPU",
     "y",
     "bool",
@@ -5461,9 +5469,23 @@
     "CONFIG_COVERAGE",
     "y",
     "bool",
-    null,
-    "unset",
-    null
+    "y",
+    "assign",
+    [
+      "/home/federico/Documents/Zephyr_Intermediate_Course_IOMICO/taskworkspace/zephyr-intermediate/twister-out/native_sim_native/host_gnu/zephyr-intermediate/tests/temp_alarm/homework.unit.temp_alarm.ordered/twister/testsuite_extra.conf",
+      2
+    ]
+  ],
+  [
+    "CONFIG_COVERAGE_NATIVE_GCOV",
+    "y",
+    "bool",
+    "y",
+    "default",
+    [
+      "/home/federico/Documents/Zephyr_Intermediate_Course_IOMICO/taskworkspace/deps/zephyr/subsys/testsuite/Kconfig.coverage",
+      24
+    ]
   ],
   [
     "CONFIG_FORCE_COVERAGE",
@@ -5788,12 +5810,9 @@
     "CONFIG_SIZE_OPTIMIZATIONS",
     "y",
     "bool",
-    "y",
-    "default",
-    [
-      "/home/federico/Documents/Zephyr_Intermediate_Course_IOMICO/taskworkspace/deps/zephyr/Kconfig.zephyr",
-      517
-    ]
+    null,
+    "unset",
+    null
   ],
   [
     "CONFIG_SIZE_OPTIMIZATIONS_AGGRESSIVE",
@@ -5823,9 +5842,12 @@
     "CONFIG_NO_OPTIMIZATIONS",
     "y",
     "bool",
-    null,
-    "unset",
-    null
+    "y",
+    "default",
+    [
+      "/home/federico/Documents/Zephyr_Intermediate_Course_IOMICO/taskworkspace/deps/zephyr/Kconfig.zephyr",
+      514
+    ]
   ],
   [
     "CONFIG_COMPILER_WARNINGS_AS_ERRORS",

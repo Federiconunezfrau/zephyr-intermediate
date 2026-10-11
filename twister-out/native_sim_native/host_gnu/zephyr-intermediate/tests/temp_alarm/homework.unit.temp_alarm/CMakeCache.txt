@@ -345,6 +345,9 @@ NSI_DIR:PATH=/home/federico/Documents/Zephyr_Intermediate_Course_IOMICO/taskwork
 //Path to a program.
 OPENOCD:FILEPATH=/usr/bin/openocd
 
+//No help, variable specified on the command line.
+OVERLAY_CONFIG:UNINITIALIZED=/home/federico/Documents/Zephyr_Intermediate_Course_IOMICO/taskworkspace/zephyr-intermediate/twister-out/native_sim_native/host_gnu/zephyr-intermediate/tests/temp_alarm/homework.unit.temp_alarm/twister/testsuite_extra.conf
+
 //Path to a program.
 PAHOLE:FILEPATH=PAHOLE-NOTFOUND
 
@@ -364,7 +367,7 @@ SOC_FULL_DIR:PATH=/home/federico/Documents/Zephyr_Intermediate_Course_IOMICO/tas
 TC_NAME:UNINITIALIZED=homework.unit.temp_alarm
 
 //No help, variable specified on the command line.
-TC_RUNID:UNINITIALIZED=37dbfce3d7c4a0aa5450c852491a783c
+TC_RUNID:UNINITIALIZED=d391ecbf1b3978493f692a2dbeb3c0a2
 
 //True if toolchain supports libstdc++
 TOOLCHAIN_HAS_GLIBCXX:BOOL=ON
