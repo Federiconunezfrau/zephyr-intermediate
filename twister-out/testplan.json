@@ -4,7 +4,7 @@
         "zephyr_version":"v4.4.0",
         "toolchain":"zephyr/gnu",
         "commit_date":"2026-04-14T14:45:49-05:00",
-        "run_date":"2026-10-11T13:54:37+00:00",
+        "run_date":"2026-11-14T17:42:08+00:00",
         "options":{
             "help":null,
             "zephyr_base":null,
@@ -24,7 +24,7 @@
             "arch":"posix",
             "platform":"native_sim/native",
             "path":"../../zephyr-intermediate/tests/temp_alarm",
-            "run_id":"996848db944735d4eb0ff59d643d6b01",
+            "run_id":"b1d345766920364396ddc6256b5eb7bc",
             "runnable":true,
             "retries":0,
             "toolchain":"host/gnu",
@@ -33,7 +33,31 @@
             "build_time":"0.00",
             "testcases":[
                 {
+                    "identifier":"homework.unit.temp_alarm.temp_alarm_invalid_input.init_without_device",
+                    "status":"None"
+                },
+                {
+                    "identifier":"homework.unit.temp_alarm.temp_alarm_sensor_errors.fetch_error_propagates",
+                    "status":"None"
+                },
+                {
                     "identifier":"homework.unit.temp_alarm.temp_alarm_sensor_errors.fail_then_recover",
+                    "status":"None"
+                },
+                {
+                    "identifier":"homework.unit.temp_alarm.temp_alarm_invalid_input.init_threshold_out_of_range",
+                    "status":"None"
+                },
+                {
+                    "identifier":"homework.unit.temp_alarm.temp_alarm_check.above_threshold",
+                    "status":"None"
+                },
+                {
+                    "identifier":"homework.unit.temp_alarm.temp_alarm_reset.reset_clears_state",
+                    "status":"None"
+                },
+                {
+                    "identifier":"homework.unit.temp_alarm.temp_alarm_invalid_input.set_threshold_out_of_range",
                     "status":"None"
                 },
                 {
@@ -45,15 +69,7 @@
                     "status":"None"
                 },
                 {
-                    "identifier":"homework.unit.temp_alarm.temp_alarm_reset.reset_clears_state",
-                    "status":"None"
-                },
-                {
-                    "identifier":"homework.unit.temp_alarm.temp_alarm_sensor_errors.fetch_error_propagates",
-                    "status":"None"
-                },
-                {
-                    "identifier":"homework.unit.temp_alarm.temp_alarm_invalid_input.init_without_device",
+                    "identifier":"homework.unit.temp_alarm.temp_alarm_check.at_threshold",
                     "status":"None"
                 },
                 {
@@ -61,27 +77,11 @@
                     "status":"None"
                 },
                 {
-                    "identifier":"homework.unit.temp_alarm.temp_alarm_invalid_input.init_threshold_out_of_range",
-                    "status":"None"
-                },
-                {
-                    "identifier":"homework.unit.temp_alarm.temp_alarm_get_status.status_after_init",
-                    "status":"None"
-                },
-                {
-                    "identifier":"homework.unit.temp_alarm.temp_alarm_check.at_threshold",
-                    "status":"None"
-                },
-                {
-                    "identifier":"homework.unit.temp_alarm.temp_alarm_check.above_threshold",
-                    "status":"None"
-                },
-                {
                     "identifier":"homework.unit.temp_alarm.temp_alarm_sensor_errors.channel_get_error_propagates",
                     "status":"None"
                 },
                 {
-                    "identifier":"homework.unit.temp_alarm.temp_alarm_invalid_input.set_threshold_out_of_range",
+                    "identifier":"homework.unit.temp_alarm.temp_alarm_get_status.status_after_init",
                     "status":"None"
                 }
             ]
@@ -91,7 +91,7 @@
             "arch":"posix",
             "platform":"native_sim/native",
             "path":"../../zephyr-intermediate/tests/temp_alarm",
-            "run_id":"f2565c89b4c7d2edf3bc7ce340ab7572",
+            "run_id":"20ff6dca417daedd8f101e2ada26929e",
             "runnable":true,
             "retries":0,
             "toolchain":"host/gnu",
@@ -100,7 +100,31 @@
             "build_time":"0.00",
             "testcases":[
                 {
+                    "identifier":"homework.unit.temp_alarm.ordered.temp_alarm_invalid_input.init_without_device",
+                    "status":"None"
+                },
+                {
+                    "identifier":"homework.unit.temp_alarm.ordered.temp_alarm_sensor_errors.fetch_error_propagates",
+                    "status":"None"
+                },
+                {
                     "identifier":"homework.unit.temp_alarm.ordered.temp_alarm_sensor_errors.fail_then_recover",
+                    "status":"None"
+                },
+                {
+                    "identifier":"homework.unit.temp_alarm.ordered.temp_alarm_invalid_input.init_threshold_out_of_range",
+                    "status":"None"
+                },
+                {
+                    "identifier":"homework.unit.temp_alarm.ordered.temp_alarm_check.above_threshold",
+                    "status":"None"
+                },
+                {
+                    "identifier":"homework.unit.temp_alarm.ordered.temp_alarm_reset.reset_clears_state",
+                    "status":"None"
+                },
+                {
+                    "identifier":"homework.unit.temp_alarm.ordered.temp_alarm_invalid_input.set_threshold_out_of_range",
                     "status":"None"
                 },
                 {
@@ -112,15 +136,7 @@
                     "status":"None"
                 },
                 {
-                    "identifier":"homework.unit.temp_alarm.ordered.temp_alarm_reset.reset_clears_state",
-                    "status":"None"
-                },
-                {
-                    "identifier":"homework.unit.temp_alarm.ordered.temp_alarm_sensor_errors.fetch_error_propagates",
-                    "status":"None"
-                },
-                {
-                    "identifier":"homework.unit.temp_alarm.ordered.temp_alarm_invalid_input.init_without_device",
+                    "identifier":"homework.unit.temp_alarm.ordered.temp_alarm_check.at_threshold",
                     "status":"None"
                 },
                 {
@@ -128,27 +144,11 @@
                     "status":"None"
                 },
                 {
-                    "identifier":"homework.unit.temp_alarm.ordered.temp_alarm_invalid_input.init_threshold_out_of_range",
-                    "status":"None"
-                },
-                {
-                    "identifier":"homework.unit.temp_alarm.ordered.temp_alarm_get_status.status_after_init",
-                    "status":"None"
-                },
-                {
-                    "identifier":"homework.unit.temp_alarm.ordered.temp_alarm_check.at_threshold",
-                    "status":"None"
-                },
-                {
-                    "identifier":"homework.unit.temp_alarm.ordered.temp_alarm_check.above_threshold",
-                    "status":"None"
-                },
-                {
                     "identifier":"homework.unit.temp_alarm.ordered.temp_alarm_sensor_errors.channel_get_error_propagates",
                     "status":"None"
                 },
                 {
-                    "identifier":"homework.unit.temp_alarm.ordered.temp_alarm_invalid_input.set_threshold_out_of_range",
+                    "identifier":"homework.unit.temp_alarm.ordered.temp_alarm_get_status.status_after_init",
                     "status":"None"
                 }
             ]

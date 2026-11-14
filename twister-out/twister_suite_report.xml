@@ -1,5 +1,5 @@
 <testsuites>
-	<testsuite name="homework.unit.temp_alarm" time="0.14" timestamp="2026-10-11T10:54:38.348163" tests="13" failures="0" errors="0" skipped="7">
+	<testsuite name="homework.unit.temp_alarm" time="0.06" timestamp="2026-11-14T14:42:08.783969" tests="13" failures="0" errors="0" skipped="7">
 		<properties>
 			<property name="version" value="v4.4.0" />
 			<property name="platform" value="native_sim/native" />
@@ -33,7 +33,7 @@
 			<skipped type="skipped" message="ztest skip" />
 		</testcase>
 	</testsuite>
-	<testsuite name="homework.unit.temp_alarm.ordered" time="0.03" timestamp="2026-10-11T10:54:38.348163" tests="13" failures="0" errors="0" skipped="7">
+	<testsuite name="homework.unit.temp_alarm.ordered" time="0.01" timestamp="2026-11-14T14:42:08.783969" tests="13" failures="0" errors="0" skipped="7">
 		<properties>
 			<property name="version" value="v4.4.0" />
 			<property name="platform" value="native_sim/native" />
