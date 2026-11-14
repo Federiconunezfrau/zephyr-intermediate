@@ -121,7 +121,7 @@ static void healtch_check_thread_fn(void *p1, void *p2, void *p3) {
 
     uint32_t numUsed;
 
-    while( (numUsed = k_msgq_num_used_get(&theMsgq)) <= (K_MSGQ_DEPTH * 3 / 4)) {
+    while( (numUsed = k_msgq_num_used_get(&theMsgq)) < (K_MSGQ_DEPTH * 3 / 4)) {
         k_msleep(HEALTH_CHECK_PERIOD_MS);
     }
 
