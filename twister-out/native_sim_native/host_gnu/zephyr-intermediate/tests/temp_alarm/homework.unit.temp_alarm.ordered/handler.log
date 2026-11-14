@@ -40,6 +40,7 @@ START - test_init_without_device
 START - test_set_threshold_out_of_range
 [00:00:00.000,000] <inf> temp_alarm: Temperature alarm initialized (threshold=30 C)
 [00:00:00.000,000] <wrn> temp_alarm: Alarm! temp=31 > threshold=30
+[00:00:00.000,000] <wrn> temp_alarm: Alarm! temp=31 > threshold=30
  PASS - test_set_threshold_out_of_range in 0.000 seconds
 ===================================================================
 TESTSUITE temp_alarm_invalid_input succeeded
@@ -112,5 +113,5 @@ SUITE PASS - 100.00% [temp_alarm_threshold]: pass = 1, fail = 0, skip = 0, total
 ------ TESTSUITE SUMMARY END ------
 
 ===================================================================
-RunID: 7a5c5c2d8473c6b3f36f6f344691959b
+RunID: 192569ac20e15247811961c56d2a0301
 PROJECT EXECUTION SUCCESSFUL

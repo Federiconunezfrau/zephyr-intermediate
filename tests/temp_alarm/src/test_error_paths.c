@@ -177,8 +177,8 @@ ZTEST(temp_alarm_invalid_input, test_set_threshold_out_of_range)
 	struct temp_alarm_status status;
 
 	// In order to verify that invalid values passed to set_threshold() do not modify the
-	// current threshold of 30°C, I will take advantage that the function set_threshold()
-	// resets the alarm when a valid threshold is set. So, if the alarm is triggered with
+	// current threshold of 30°C, I will take advantage of the function set_threshold(),
+	// which resets the alarm when a valid threshold is set. So, if the alarm is triggered with
 	// a threshold of 30°C, and 2 invalid values are passed to set_threshold(), then the
 	// alarm should never be cleared. I will set a temperature of 31°C (next int immediately
 	// after 30), then set the 2 invalid values, and finally check that is_alarming is
@@ -197,8 +197,12 @@ ZTEST(temp_alarm_invalid_input, test_set_threshold_out_of_range)
 		zassert_equal(ret, -EINVAL, "The return status should be -EINVAL, got %d", ret);
 	}
 
-	// Finally, because both threshold were not valid, is_alarming should not have
-	// changed
+	// After the rejected set_thresholds, the threshold should still be 30. The temperature
+	// of 31 is set again, the temperature is checked and the status.is_alarming should be true,
+	// because the original threshold of 30 should not have changed
+	sensor_fake_set_temperature(DEFAULT_THRESHOLD+1);
+	ret = temp_alarm_check();
+	zassert_ok(ret, "Check should succeed, but got error %d", ret);
 	ret = temp_alarm_get_status(&status);
 	zassert_ok(ret, "get_status should succeed");
 	zassert_true(status.is_alarming, "is_alarming should still be true");

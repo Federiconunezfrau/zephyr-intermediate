@@ -1,9 +1,9 @@
 <testsuites>
-	<testsuite name="native_sim/native" timestamp="2026-10-11T12:24:01.263545" time="0.17" tests="2" failures="0" errors="0" skipped="0">
+	<testsuite name="native_sim/native" timestamp="2026-11-14T15:28:36.313116" time="0.11" tests="2" failures="0" errors="0" skipped="0">
 		<properties>
 			<property name="version" value="v4.4.0" />
 		</properties>
-		<testcase classname="native_sim/native:homework.unit.temp_alarm" name="homework.unit.temp_alarm" time="0.14" />
-		<testcase classname="native_sim/native:homework.unit.temp_alarm.ordered" name="homework.unit.temp_alarm.ordered" time="0.03" />
+		<testcase classname="native_sim/native:homework.unit.temp_alarm" name="homework.unit.temp_alarm" time="0.09" />
+		<testcase classname="native_sim/native:homework.unit.temp_alarm.ordered" name="homework.unit.temp_alarm.ordered" time="0.02" />
 	</testsuite>
 </testsuites>

@@ -179,6 +179,8 @@ ZTEST(temp_alarm_threshold, test_new_threshold_clears_alarm)
 	// should be 1, because it was already triggered before changing the threshold
 	ret = temp_alarm_check();
 	zassert_ok(ret, "Check should succeed, but got error %d", ret);
+	ret = temp_alarm_get_status(&status);
+	zassert_ok(ret, "get_status should succeed");
 	zassert_false(status.is_alarming, "is_alarming must be false");
 	zassert_equal(status.alarm_count, 1U, "alarm_count must be 1, got %u", status.alarm_count);
 }
