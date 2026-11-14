@@ -4,7 +4,7 @@
         "zephyr_version":"v4.4.0",
         "toolchain":"zephyr/gnu",
         "commit_date":"2026-04-14T14:45:49-05:00",
-        "run_date":"2026-11-14T17:42:08+00:00",
+        "run_date":"2026-11-14T18:32:47+00:00",
         "options":{
             "help":null,
             "zephyr_base":null,
@@ -24,13 +24,13 @@
             "arch":"posix",
             "platform":"native_sim/native",
             "path":"../../zephyr-intermediate/tests/temp_alarm",
-            "run_id":"b1d345766920364396ddc6256b5eb7bc",
+            "run_id":"42c29adab5f870ad322cc16b14940d44",
             "runnable":true,
             "retries":0,
             "toolchain":"host/gnu",
             "status":"passed",
-            "execution_time":"0.06",
-            "build_time":"8.53",
+            "execution_time":"0.07",
+            "build_time":"9.86",
             "testcases":[
                 {
                     "identifier":"homework.unit.temp_alarm.temp_alarm_reset.reset_clears_state",
@@ -111,13 +111,13 @@
             "arch":"posix",
             "platform":"native_sim/native",
             "path":"../../zephyr-intermediate/tests/temp_alarm",
-            "run_id":"20ff6dca417daedd8f101e2ada26929e",
+            "run_id":"81cb549f0482de88d4bcc366b8f1f314",
             "runnable":true,
             "retries":0,
             "toolchain":"host/gnu",
             "status":"passed",
-            "execution_time":"0.01",
-            "build_time":"8.54",
+            "execution_time":"0.02",
+            "build_time":"9.94",
             "testcases":[
                 {
                     "identifier":"homework.unit.temp_alarm.ordered.temp_alarm_reset.reset_clears_state",
